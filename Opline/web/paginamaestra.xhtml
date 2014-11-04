@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      >
+    <f:view encoding="utf-8"  contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+
+
+                <script type="text/javascript">
+                    function subirImagen() {
+                        dlgSubirFoto.show();
+                    }
+                    function editarImagen() {
+                        dlgEditarImagen.show();
+                    }
+                </script>
+                <script src="js/jQuery.js"></script>
+                <script src="js/traducirCalendario.js"></script>
+
+                <meta charset='utf-8' />
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+                <title>OPLine</title>                  
+                <link rel="stylesheet" type="text/css" href="css/estilosPaginaMaestra.css" />
+
+                <script type="text/javascript">
+
+                    function cargarPagina(url) {
+                        //$('div#divLoader').slideDown('fast');
+                        $('#divLoader2').hide();
+                        $("#contenido")
+                                .html('')
+                                .append($('#divLoader2').clone().show());
+                        $.post(url, function(data) {
+                            $("#contenido").html(data);
+                        });
+                    }
+                </script>                                 
+
+                <script type="text/javascript">
+                    function cargarImagen() {
+                        PF('dlgSubirFoto').show();
+                    }
+                </script>
+            </f:facet>
+        </h:head>
+        <h:body onload="cargarPagina('aplicarEstilos.xhtml')">
+            <h:form enctype="multipart/form-data">
+                <header class="header1">
+                    <div>
+                        <nav class="nav1">
+                            <div class="div1">
+                                <a href="paginamaestra.xhtml" class="linkOpline" >
+                                    <img id="logoOpline" src="imagenes/logoETOC.png" />
+                                    <span id="tituloOpline">
+                                        Sistema de control de procesos internos
+                                    </span>
+                                </a>
+                                <div id="controles">
+                                    <p:outputLabel value="Usuario: "  style="font-weight: bold; color: #98C466; font-size: 14px;"/><p:outputLabel style="font-size: 14px; color: #959595;" value="#{principalManagedBean.datosPrincipal.idRol.nombre} - #{principalManagedBean.datosPrincipal.apellido}" />
+                                    <div id="btnCerrarSesion">                                                                                    
+                                        <p:commandLink id="ajax" style="color: #444444; font-size: 14px;" actionListener="#{principalManagedBean.cerrarSesion()}">
+                                            <h:outputText value="Cerrar Sesion" style="text-decoration: none;"/>
+                                        </p:commandLink>                                   
+                                    </div>
+                                </div>
+                            </div>                        
+                        </nav>
+                    </div>
+                </header>                
+
+                <main role="main" class="paginaMaestra" >
+                    <section class="cuerpoContenedor">                    
+                        <div id="menus">  
+                            <p:menubar style="width: 70%;">            
+                                <p:submenu label="Inicio" icon="ui-icon-home">
+                                    <p:menuitem value="Inicio" url="#" onclick="cargarPagina('aplicarEstilos.xhtml')" />
+                                    <p:menuitem value="Salir" action="#{principalManagedBean.cerrarSesion()}"/>
+                                </p:submenu>
+                                <p:submenu label="Mis opciones" icon="ui-icon-star">                    
+                                    <c:forEach var="menu" items="#{principalManagedBean.listaMenu}">                                              
+                                        <p:submenu label="#{menu.nombre}" >                                                
+                                            <c:forEach var="opcion" items="#{menu.opcionList}">                                                                                
+                                                <p:menuitem value="#{opcion.nombre}" url="#" update="rutaActual" onclick="cargarPagina('#{opcion.url}')" />
+                                            </c:forEach>                                    
+                                        </p:submenu>                                    
+                                    </c:forEach>		                                                       
+                                </p:submenu>                                          
+                                <p:submenu label="Configuración" icon="ui-icon-gear">
+                                    <p:menuitem value="Perfil" url="#" onclick="cargarPagina('perfil.xhtml')" />                                
+                                </p:submenu>
+                                <p:submenu icon="ui-icon-heart" label="Redes sociales">
+                                    <c:if test="#{loginManaged.informacion.facebook.length() > 6}" >
+                                        <p:menuitem value="Facebook" url="#{loginManaged.informacion.facebook}" target="_blank" />
+                                    </c:if>
+                                    <c:if test="#{loginManaged.informacion.twitter.length() > 6}">
+                                        <p:menuitem value="Twitter" url="#{loginManaged.informacion.twitter}" target="_blank"/>
+                                    </c:if>
+                                    <c:if test="#{loginManaged.informacion.in.length() > 6}">
+                                        <p:menuitem value="LinkedIn" url="#{loginManaged.informacion.in}" target="_blank"/>
+                                    </c:if>
+                                    <c:if test="#{loginManaged.informacion.google.length() > 6}">
+                                        <p:menuitem value="Google +" url="#{loginManaged.informacion.google}" target="_blank"/>                                    
+                                    </c:if>
+                                </p:submenu>
+                            </p:menubar>                              
+                        </div>                                                
+                        <div id="contenido"></div>
+
+                    </section>
+                </main>
+                <footer class="piePagina">
+                    <aside>
+                        <div class="extra">
+                            <div id="contentExtra">
+                                <h2>Síguenos:</h2>                
+                                <div id="redesSociales">
+                                    <a href="#{loginManaged.informacion.facebook}" target="_blank"><img src="imagenes/facebook.png" /></a>
+                                    <a href="#{loginManaged.informacion.twitter}" target="_blank" ><img src="imagenes/twitter.png" /></a>
+                                    <a href="#{loginManaged.informacion.in}" target="_blank"><img src="imagenes/linkedin.png" /></a>
+                                    <a href="#{loginManaged.informacion.google}" target="_blank"><img src="imagenes/google-plus.png" /></a>
+                                </div>                                    
+                            </div>
+                        </div>                
+                    </aside>                
+                </footer>                    
+
+                <div id="divLoader2">                    
+                    <img src="imagenes/loading.gif" /></div>
+                <link rel="stylesheet" type="text/css" href="css/theme0.css" />
+
+            </h:form>
+        </h:body>
+    </f:view>
+</html>
+

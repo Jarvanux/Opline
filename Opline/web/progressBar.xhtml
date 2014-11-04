@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:growl id="growl" />
+            <h3>Ajax ProgressBar</h3>
+            <p:commandButton value="Start" type="button" onclick="PF('pbAjax').start();
+                    PF('startButton2').disable();" widgetVar="startButton2" />
+            <p:commandButton value="Cancel" actionListener="#{progressBarView.cancel}" oncomplete="PF('pbAjax').cancel();PF('startButton2').enable();" />
+            <br /><br />
+            <p:progressBar widgetVar="pbAjax" ajax="true" value="#{progressBarView.progress}" labelTemplate="{value}%" styleClass="animated" >
+                <p:ajax event="complete" listener="#{progressBarView.onComplete}" update="growl" oncomplete="startButton2.enable()"/>
+            </p:progressBar>       
+        </h:form>
+
+        <style tyle="text/css">
+            .animated .ui-progressbar-value { 
+                background-image: url("/showcase/javax.faces.resource/demo/images/pbar-ani.gif.xhtml"); 
+            }
+        </style>
+
+        <script type="text/javascript">
+            function start() {
+                PF('startButton1').disable();
+
+                window['progress'] = setInterval(function() {
+                    var pbClient = PF('pbClient'),
+                            oldValue = pbClient.getValue(),
+                            newValue = oldValue + 10;
+
+                    pbClient.setValue(pbClient.getValue() + 10);
+
+                    if (newValue === 100) {
+                        clearInterval(window['progress']);
+                    }
+
+
+                }, 1000);
+            }
+
+            function cancel() {
+                clearInterval(window['progress']);
+                PF('pbClient').setValue(0);
+                PF('startButton1').enable();
+            }
+        </script>
+    </h:body>
+</html>
+

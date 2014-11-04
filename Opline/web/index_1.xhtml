@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      >
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+
+                <script src="js/jQuery.js"></script>
+                <title>SII-SD</title>                                
+                <style type="text/css">
+
+                    .ui-widget-content{
+                        border-top: 2px solid #FF4000;
+                    }
+                    .ui-widget-header {
+
+                        border: 1px solid #e78f08;
+                        background: #0060C0;
+                        color: #ffffff;
+                        font-weight: bold;
+                    }
+                    #divLoader{
+                        position: absolute;                        
+                        display: none;
+                        top:0px;
+                        text-align: center;
+                        height: 100%;  
+                        width: 100%;                        
+                    }                    
+
+
+                </style>
+
+
+                <script type="text/javascript">
+                    function cargarPagina(url) {
+                        //$('div#divLoader').slideDown('fast');
+                        $("#contenido")
+                                .html('')
+                                .append($('#divLoader').clone().show())
+                                .load(url, function(response, status, xhr) { //Evaluando el status
+                                    if (status == "error") { //Realizo la validación
+                                        var msg = "Error!, algo ha sucedido: "; //Almaceno el mensaje que voy a imprimir en la variable msg
+                                        $("#contenido").html(msg + xhr.status + " " + xhr.statusText); //Imprimo el (mensaje y el estado) de error.
+                                    }
+                                });
+                    }
+                </script>                
+            </f:facet>
+        </h:head>
+        <h:body onload="cargarPagina('faces/aplicarEstilos.xhtml')">
+
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="65px" resizable="true" closable="true" collapsible="true">
+                    <div id="header"><table border="0"><tr><td width="100px"><img src="imagenes/logoLOL2.png" width="80" height="80" alt="Imagentsys1"/></td> <td width="350px"><b><span style="font-family: calibri; font-size: 3em; color: #4297d7">ETOC</span></b></td></tr></table></div>
+                </p:layoutUnit>
+                <p:layoutUnit position="west" size="240" header="Menú Principal" collapsible="true">
+                    <p:accordionPanel>
+                        <c:forEach var="menu" items="#{principalManagedBean.listaMenu}">
+                            <p:tab title="#{menu.nombre}">
+                                <c:forEach var="opcion" items="#{menu.opcionList}">                                    
+                                    <ul>
+                                        <li><a href="#" onclick="cargarPagina('#{opcion.url}');"><p:outputLabel value="#{opcion.nombre}"/></a></li>
+                                    </ul>
+                                </c:forEach>
+                            </p:tab>
+                        </c:forEach>                       
+                    </p:accordionPanel>      
+                </p:layoutUnit>
+                <p:layoutUnit position="center">
+                    <div id="contenido"></div>
+                    <div id="contenidoextra"></div>
+                </p:layoutUnit>
+            </p:layout>
+
+            <table id="divLoader">                
+                <tr><td><img src="imagenes/preloader.gif" /></td></tr></table>
+        </h:body>
+    </f:view>
+</html>
+
