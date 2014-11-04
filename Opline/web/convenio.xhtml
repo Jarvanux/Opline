@@ -75,7 +75,7 @@
             <p:dialog widgetVar="dlgEditarConvenio" resizable="false" header="Editar de convenio" showEffect="clip" hideEffect="explode">
                 <p:panelGrid id="displayEditarConvenio" columns="2" columnClasses="label,value">
                     <p:outputLabel for="nombre3" value="Nombre:" />
-                    <p:inputText id="nombre3" value="#{convenioManaged.convenio.nombreConvenio}" />
+                    <p:inputText id="nombre3" value="#{convenioManaged.convenio.nombreConvenio}" style="width: 90%" />
                     <p:outputLabel for="descripcion3" value="Descripción:" />
                     <p:inputTextarea id="descripcion3" value="#{convenioManaged.convenio.descripcion}" rows="5" cols="23" counterTemplate="{0} characters remaining." autoResize="false"></p:inputTextarea>
                     <p:outputLabel for="fechaInicio3" value="Fecha Inicio:" />                    
@@ -93,16 +93,16 @@
             <p:dialog widgetVar="dlgCrearConvenio" resizable="false" header="Crear Convenio" showEffect="fade" hideEffect="explode">
                 <p:panelGrid id="displayCrearConvenio" columns="3" columnClasses="label,value" >
                     <p:outputLabel for="nombre" value="Nombre:"/>
-                    <p:inputText id="nombre" value="#{convenioManaged.nombreConvenio}" />
+                    <p:inputText id="nombre" value="#{convenioManaged.nombreConvenio}" style="width: 90%"/>
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenString1}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                     <p:outputLabel for="descripcion" value="Descripción:" />
                     <p:inputTextarea id="descripcion" value="#{convenioManaged.descripcion}" rows="5" cols="23" counterTemplate="{0} characters remaining." autoResize="false"></p:inputTextarea>
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenString2}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                     <p:outputLabel for="fechaInicio" value="Fecha Inicio:" />                    
-                    <p:calendar locale="es"  id="fechaInicio" value="#{convenioManaged.fechaInicio}" navigator="true"  disabled="false"/>
+                    <p:calendar locale="es"  id="fechaInicio" value="#{convenioManaged.fechaInicio}" navigator="true"  disabled="false" style="width: 90%"/>
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenDate1}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                     <p:outputLabel for="fechaFin" value="Fecha Fin:" />                    
-                    <p:calendar locale="es"  id="fechaFin" value="#{convenioManaged.fechaFin}" navigator="true"  disabled="false"/>
+                    <p:calendar locale="es"  id="fechaFin" value="#{convenioManaged.fechaFin}" navigator="true"  disabled="false" style="width: 90%"/>
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenDate2}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                 </p:panelGrid>
                 <p:panel style="text-align: center; margin: 0px;" >                                    

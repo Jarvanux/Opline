@@ -78,6 +78,7 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
     private String listarPor;
     private String foto;
     private String visibilidadBotonEditar;
+    private Date fechaNacimiento;
 
     private Integer rolEdit;
     private String iconoAyD;
@@ -695,4 +696,13 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+    
 }

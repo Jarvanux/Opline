@@ -7,6 +7,7 @@
       >
     <h:head>
         <title>Pago</title>
+        <script src="js/traducirCalendario.js"></script>
     </h:head>
     <h:body>
         <h:form id="form">
@@ -107,7 +108,7 @@
                     <p:panelGrid columns="3" columnClasses="label,value"  rendered="#{not empty pagoManaged1.pagoConvenio}" >
                         <p:outputLabel for="numeroConsig2" value="Número consignación:"/>
                         <p:inputText value="#{pagoManaged1.pagoConvenio.numeroConsig}" id="numeroConsig2"/>                                 
-                        <p:graphicImage value="../imagenes/#{validarFormularios.imagenInteger1}" style="width: #{validarFormularios}; height: 20px;" />
+                        <p:graphicImage value="../imagenes/#{validarFormularios.imagenInteger1}" style="width: #{validarFormularios.sizeXFinal}; height: 20px;" />
                         <p:outputLabel for="convenio2" value="Convenio:" />
                         <p:selectOneMenu value="#{pagoManaged1.pagoConvenio.idConvenio.idConvenio}" id="convenio22" style="width:180px; text-align: left; float: left; margin-top: 5px; margin-left: 5px;" >
                             <f:selectItem  itemLabel="Todos" itemValue="-1"/>
