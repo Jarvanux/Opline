@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class ConductoresManaged implements Serializable {
+public class ConductoresManaged extends ValidaSesion implements Serializable {
 
     //Trae la lista de los conductores con el primer List, el segundo sirve para el filtro
     private List<Conductor> listaConductores;

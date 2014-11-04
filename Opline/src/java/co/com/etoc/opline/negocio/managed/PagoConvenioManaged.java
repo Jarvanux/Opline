@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
 //Forma en la que se guarda
 @ViewScoped
 //Clase EntidadManaged
-public class PagoConvenioManaged implements Serializable{    
+public class PagoConvenioManaged extends ValidaSesion implements Serializable{    
     //Creamos las listas que usaremos para devolver datos.
     private List<PagoConvenio> listaPagoConvenio;
     private List<PagoConvenio> filtroPagoConvenio;

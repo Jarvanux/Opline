@@ -1,5 +1,9 @@
 package co.com.etoc.opline.utilerias.autocompletar.conductor;
  
+/**
+ *
+ * @author jhonjaider1000
+ */
 import co.com.etoc.opline.persistencia.entidades.Conductor;
 import java.util.ArrayList;
 import java.util.List;

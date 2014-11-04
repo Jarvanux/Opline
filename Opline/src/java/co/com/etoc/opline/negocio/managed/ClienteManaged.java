@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @ViewScoped
-public class ClienteManaged implements Serializable {
+public class ClienteManaged extends ValidaSesion implements Serializable {
 
     /**
      * Creates a new instance of EmpleadoManaged

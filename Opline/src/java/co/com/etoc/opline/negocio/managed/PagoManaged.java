@@ -28,7 +28,7 @@ import org.primefaces.event.RowEditEvent;
  */
 @ManagedBean
 @ViewScoped
-public class PagoManaged implements Serializable{
+public class PagoManaged extends ValidaSesion implements Serializable{
 
     private List<Pago> listaPagos;
     private List<Pago> filtroPagos;

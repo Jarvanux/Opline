@@ -35,7 +35,7 @@ import org.primefaces.event.TabChangeEvent;
  */
 @ManagedBean
 @ViewScoped
-public class AsociadoManaged1 implements Serializable{
+public class AsociadoManaged1 extends ValidaSesion implements Serializable{
 
     //Datos de la tabla asociado
     private int idAsociado;

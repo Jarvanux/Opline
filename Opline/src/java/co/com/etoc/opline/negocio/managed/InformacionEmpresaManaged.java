@@ -2,6 +2,7 @@ package co.com.etoc.opline.negocio.managed;
 
 import co.com.etoc.opline.persistencia.dao.InformacionEmpresaFacadeLocal;
 import co.com.etoc.opline.persistencia.entidades.InformacionEmpresa;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -15,7 +16,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @RequestScoped
-public class InformacionEmpresaManaged {
+public class InformacionEmpresaManaged extends ValidaSesion implements Serializable{
     public InformacionEmpresaManaged() {
     }
     

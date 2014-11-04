@@ -28,7 +28,7 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 @ViewScoped
 
-public class RecuperarCuentaManaged implements Serializable{
+public class RecuperarCuentaManaged extends ValidaSesion implements Serializable{
 
     //String cedula, String correo, String celular
     private String cedula;

@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class VehiculosManaged extends  ValidaSesion implements Serializable {
+public class VehiculosManaged extends ValidaSesion implements Serializable {
 
     private Vehiculo vehiculo;
     private List<Vehiculo> vehiculos;

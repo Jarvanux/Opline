@@ -33,7 +33,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class ReunionManaged implements Serializable {
+public class ReunionManaged extends ValidaSesion implements Serializable {
 
     private List<Reunion> listaReuniones;
     private List<Reunion> filtroReuniones;
@@ -203,6 +203,7 @@ public class ReunionManaged implements Serializable {
                 }//Fin primera condición                                   
             }//Fin for 1 primario.
         }//Fin condición global.
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registros Agregados"));
         System.out.println(vehiculosAgregados);
     }
 
@@ -215,7 +216,7 @@ public class ReunionManaged implements Serializable {
             }//Fin for.
         }//Fin primeara condición.
         System.out.println(this.empleadosAgregados);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Registros Agregados"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registros Agregados"));
     }//Fin método agregarAListaEmpleados().
 
     public void enviarCorreosVehiculos() {
@@ -263,6 +264,7 @@ public class ReunionManaged implements Serializable {
     public void todosLosEmpleados() {
         this.empleadosAgregados = this.listaEpleados;
         System.out.println(this.empleadosAgregados);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registros agregados"));
     }
 
     public void todosLosConductores() {
@@ -355,6 +357,7 @@ public class ReunionManaged implements Serializable {
 
     public void actualizarMensaje() {
         this.mensaje = mensajeEdicion;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Mensaje Actualizado"));
     }
 
     public void validar() {

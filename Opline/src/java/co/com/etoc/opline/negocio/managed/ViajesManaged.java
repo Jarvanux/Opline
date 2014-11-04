@@ -18,7 +18,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class ViajesManaged implements Serializable{
+public class ViajesManaged extends ValidaSesion implements Serializable{
 
     private List<Vehiculo> listaVehiculos;
     private List<Vehiculo> filtroVehiculos;

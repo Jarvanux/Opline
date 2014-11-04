@@ -9,8 +9,8 @@
     </h:head>
     <h:body>
         <!--MENSAJE DE LAS OPERACIONES REALIZADAS-->
-        <p:growl id="mensaje2" autoUpdate="false" showSummary="false"  showDetail="true"/>
         <!--FIN MENSAJE-->
+        <p:growl id="mensaje2" autoUpdate="false" showSummary="false"  showDetail="true"/>
         <h:form id="form">
             <!--TABLA LISTAR REUNIONES-->
             <p:dataTable id="tabla" var="reunion" value="#{reunionManaged.listaReuniones}" widgetVar="tablaReunion" style="font-family: calibri; width: 100%;"
@@ -143,7 +143,7 @@
             <p:dialog widgetVar="dlgEditarSMS" header="Editar mensaje" resizable="false">
                 <div style="width: 500px; text-align: center;">
                 <p:inputTextarea value="#{reunionManaged.mensajeEdicion}" style="width: 95%;" rows="3" autoResize="false"/>
-                <p:commandButton value="Actualizar" actionListener="#{reunionManaged.actualizarMensaje()}" onclick="PF('dlgEditarSMS').hide()"/>
+                <p:commandButton value="Actualizar" actionListener="#{reunionManaged.actualizarMensaje()}" onclick="PF('dlgEditarSMS').hide()" update=":mensaje2"/>
                 <p:commandButton value="Cancelar" onclick="PF('dlgEditarSMS').hide()"/>
                 </div>
             </p:dialog>            
@@ -209,9 +209,9 @@
                     </p:dataTable>
                     <!--FIN TABLA DE VEHICULOS POR ZONAS-->                    
                     <h:panelGrid columns="3" style="margin: 0 auto;">
-                        <p:commandButton value="Agregar a la lista" actionListener="#{reunionManaged.agregarAListaVehiculos()}" title="Agregar a la lista" style="margin-left: 20px; font-size: 13px;" update=":form:displayConfigAsistencia" />
+                        <p:commandButton value="Agregar a la lista" actionListener="#{reunionManaged.agregarAListaVehiculos()}" title="Agregar a la lista" style="margin-left: 20px; font-size: 13px;" update=":form:displayConfigAsistencia, :mensaje2" />
                         <p:commandButton value="Finalizar configuración"  onclick="PF('dlgConfigAsistencia').hide()" style="font-size: 13px;" title="Finalizar Configuración"/>
-                        <p:commandButton value="Todos" actionListener="#{reunionManaged.todosLosConductores()}" style="font-size: 13px;" onclick="PF('dlgConfigAsistencia').hide()"/>
+                        <p:commandButton value="Todos" actionListener="#{reunionManaged.todosLosConductores()}" style="font-size: 13px;" onclick="PF('dlgConfigAsistencia').hide()" update=":mensaje2"/>
                     </h:panelGrid>
                 </p:panel>
             </p:dialog>
@@ -265,9 +265,9 @@
                         </f:facet>
                     </p:dataTable>
                     <h:panelGrid columns="3" style="margin: 0 auto;">
-                        <p:commandButton value="Agregar a la lista" actionListener="#{reunionManaged.agregarAListaEmpleados()}" title="Agregar a la lista" style="margin-left: 20px; font-size: 13px;" update=":form:displayConfigAsistencia2" />
+                        <p:commandButton value="Agregar a la lista" actionListener="#{reunionManaged.agregarAListaEmpleados()}" title="Agregar a la lista" style="margin-left: 20px; font-size: 13px;" update=":form:displayConfigAsistencia2, :mensaje2" />
                         <p:commandButton value="Finalizar configuración"  onclick="PF('dlgConfigAsistencia2').hide()" style="font-size: 13px;" title="Finalizar Configuración"/>
-                        <p:commandButton value="Todos" actionListener="#{reunionManaged.todosLosEmpleados()}" onclick="PF('dlgConfigAsistencia2').hide()" style="font-size: 13px;"/>
+                        <p:commandButton value="Todos" actionListener="#{reunionManaged.todosLosEmpleados()}" onclick="PF('dlgConfigAsistencia2').hide()" style="font-size: 13px;" update=":mensaje2"/>
                     </h:panelGrid>
                 </p:panel>
             </p:dialog>

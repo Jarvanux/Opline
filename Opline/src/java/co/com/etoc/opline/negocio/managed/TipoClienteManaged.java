@@ -19,7 +19,7 @@ import org.primefaces.event.RowEditEvent;
 
 @ManagedBean
 @ViewScoped
-public class TipoClienteManaged implements Serializable{
+public class TipoClienteManaged extends ValidaSesion implements Serializable{
 
     /**
      * Creates a new instance of ZonaManaged

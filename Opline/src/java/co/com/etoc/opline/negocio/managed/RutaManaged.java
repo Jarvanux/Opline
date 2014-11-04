@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @RequestScoped
-public class RutaManaged implements Serializable{
+public class RutaManaged extends ValidaSesion implements Serializable{
 
     private List<Ruta> listarRuta;
     private List<Ruta> filtrarRuta;

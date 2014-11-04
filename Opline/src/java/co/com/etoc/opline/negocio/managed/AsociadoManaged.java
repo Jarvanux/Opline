@@ -15,7 +15,7 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @ViewScoped
-public class AsociadoManaged implements Serializable {
+public class AsociadoManaged extends ValidaSesion implements Serializable {
 
     private List<Asociado> listaAsociado;
     private int asociado;    

@@ -26,7 +26,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class ZonaManaged implements  Serializable{
+public class ZonaManaged extends ValidaSesion implements Serializable{
 
     /**
      * Creates a new instance of ZonaManaged

@@ -15,7 +15,7 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @ViewScoped
-public class RolesManaged implements Serializable {
+public class RolesManaged extends ValidaSesion implements Serializable {
 
     private List<Rol> listaRol;
     private int roles;    

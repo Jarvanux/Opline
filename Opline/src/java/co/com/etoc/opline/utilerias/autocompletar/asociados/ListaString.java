@@ -1,5 +1,9 @@
 package co.com.etoc.opline.utilerias.autocompletar.asociados;
 
+/**
+ *
+ * @author jhonjaider1000
+ */
 import co.com.etoc.opline.persistencia.dao.AsociadoFacadeLocal;
 import co.com.etoc.opline.persistencia.entidades.Asociado;
 import java.util.ArrayList;

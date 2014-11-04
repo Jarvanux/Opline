@@ -46,7 +46,7 @@ import org.primefaces.model.UploadedFile;
 
 @ManagedBean
 @ViewScoped
-public class EmpleadoManaged implements Serializable {
+public class EmpleadoManaged extends ValidaSesion implements Serializable {
 
     private RolesManaged lr = new RolesManaged();
     private List<Empleado> listaEmpleado;

@@ -25,7 +25,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class ConvenioManaged implements Serializable {
+public class ConvenioManaged extends ValidaSesion implements Serializable {
 
     private List<Convenio> listaConvenio;
     private List<Convenio> filtroConvenio;

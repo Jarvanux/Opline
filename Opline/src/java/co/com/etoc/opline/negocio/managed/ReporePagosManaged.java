@@ -21,7 +21,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class ReporePagosManaged implements Serializable{
+public class ReporePagosManaged extends ValidaSesion implements Serializable{
 
     
     private Date fechaInicio;

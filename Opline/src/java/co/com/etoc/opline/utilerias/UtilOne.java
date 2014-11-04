@@ -1,5 +1,9 @@
 package co.com.etoc.opline.utilerias;
 
+/**
+ *
+ * @author jhonjaider1000
+ */
 import java.net.Socket;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -7,6 +11,13 @@ import java.util.Date;
 
 public class UtilOne {
     
+    /**
+     * 
+     * @param clave Recibe la clave que queremos encriptar.
+     * @return retorna un String con una cadena de caracteres codificados
+     * en MD5 de la cadena recibida, en este caso la clave.
+     * @throws Exception Lanzará una exception cuando suceda algo.
+     */
     public static String md5(String clave) throws Exception {
         MessageDigest md = MessageDigest.getInstance("MD5");
         byte[] b = md.digest(clave.getBytes());
