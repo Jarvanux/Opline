@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package co.com.etoc.opline.persistencia.dao;
 
 import co.com.etoc.opline.persistencia.entidades.PagoConvenio;
@@ -19,6 +18,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class PagoConvenioFacade extends AbstractFacade<PagoConvenio> implements PagoConvenioFacadeLocal {
+
     @PersistenceContext(unitName = "OplinePU")
     private EntityManager em;
 
@@ -34,16 +34,17 @@ public class PagoConvenioFacade extends AbstractFacade<PagoConvenio> implements 
     @Override
     public List<PagoConvenio> listarPor(Integer idConvenio) {
         Query q = null;
-        try{
+        try {
             q = em.createNativeQuery("SELECT * FROM pago_convenio where id_convenio = ?", PagoConvenio.class);
             q.setParameter(1, idConvenio);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Error PagoConvenioFacade al listarPor");
         }
         return q.getResultList();
     }
+
     @Override
-    public List<PagoConvenio> listarOrdenadamente(){
+    public List<PagoConvenio> listarOrdenadamente() {
         Query q = null;
         try {
             q = em.createNativeQuery("select * from pago_convenio order by numero_consig desc", PagoConvenio.class);
@@ -52,30 +53,46 @@ public class PagoConvenioFacade extends AbstractFacade<PagoConvenio> implements 
         }
         return q.getResultList();
     }
-    
-    
-     @Override
+
+    @Override
     public PagoConvenio ultimoPago(Integer idVehiculo) {
         Query q = null;
         try {
-            q = em.createNativeQuery("select * from pago_convenio where id_vehiculo = "+idVehiculo+" order by fecha_consignacion desc limit 1", PagoConvenio.class);
-            return (PagoConvenio)q.getSingleResult();
+            q = em.createNativeQuery("select * from pago_convenio where id_vehiculo = " + idVehiculo + " order by fecha_consignacion desc limit 1", PagoConvenio.class);
+            return (PagoConvenio) q.getSingleResult();
         } catch (Exception e) {
         }
         return null;
     }
-    
+
     @Override
     public PagoConvenio ultimoPago(Integer idVehiculo, Integer idConvenio) {
         Query q = null;
         try {
-            q = em.createNativeQuery("select * from pago_convenio where id_vehiculo = "+idVehiculo+" and id_convenio = "+idConvenio+" order by fecha_consignacion desc limit 1", PagoConvenio.class);         
-            return (PagoConvenio)q.getSingleResult();
+            q = em.createNativeQuery("select * from pago_convenio where id_vehiculo = " + idVehiculo + " and id_convenio = " + idConvenio + " order by fecha_consignacion desc limit 1", PagoConvenio.class);
+            return (PagoConvenio) q.getSingleResult();
         } catch (Exception e) {
             return null;
-       }
-        
+        }
     }
-    
-    
+
+    @Override
+    public boolean comprobarCodigoRepetido(Integer numeroRecibo) {
+        Query q = null;
+        int resultado = 0;
+        try {
+            q = em.createNativeQuery("select count(*) as codigoUsado from pago where numero_recibo = ?");
+            q.setParameter(1, numeroRecibo);
+            resultado = Integer.parseInt(q.getSingleResult().toString());
+        } catch (Exception e) {
+            resultado = -1;
+            e.printStackTrace();
+        }
+        if (resultado > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

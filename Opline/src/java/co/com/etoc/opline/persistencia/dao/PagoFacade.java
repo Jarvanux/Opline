@@ -35,16 +35,16 @@ public class PagoFacade extends AbstractFacade<Pago> implements PagoFacadeLocal 
     public List<Pago> tipoExclusivo(Integer listarPor) {
         Query q = null;
         try {
-            q = em.createNativeQuery("select * from pago where id_tipo_pago = ?", Pago.class);            
+            q = em.createNativeQuery("select * from pago where id_tipo_pago = ?", Pago.class);
             q.setParameter(1, listarPor);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
         return q.getResultList();
     }
-    
+
     @Override
-    public List<Pago> listarOrdenadamente(){
+    public List<Pago> listarOrdenadamente() {
         Query q = null;
         try {
             q = em.createNativeQuery("select * from pago order by numero_recibo desc", Pago.class);
@@ -53,31 +53,48 @@ public class PagoFacade extends AbstractFacade<Pago> implements PagoFacadeLocal 
             System.out.println("Se ha producido un error en el Facade al tratar de listar Ordenadmente.");
             return null;
         }
-        
+
     }
 
     @Override
     public Pago ultimoPago(Integer idAsociado) {
         Query q = null;
         try {
-            q = em.createNativeQuery("select * from pago where id_asociado = "+idAsociado+" order by fecha_pago desc limit 1 ", Pago.class);
+            q = em.createNativeQuery("select * from pago where id_asociado = " + idAsociado + " order by fecha_pago desc limit 1 ", Pago.class);
         } catch (Exception e) {
         }
-        return (Pago)q.getSingleResult();
+        return (Pago) q.getSingleResult();
     }
 
     @Override
     public Pago ultimoPago(Integer idAsociado, Integer idTipoPago) {
         Query q = null;
         try {
-            q = em.createNativeQuery("select * from pago where id_asociado = "+idAsociado+" and id_tipo_pago = "+idTipoPago+" order by fecha_pago desc limit 1 ", Pago.class);
-             return (Pago)q.getSingleResult();
+            q = em.createNativeQuery("select * from pago where id_asociado = " + idAsociado + " and id_tipo_pago = " + idTipoPago + " order by fecha_pago desc limit 1 ", Pago.class);
+            return (Pago) q.getSingleResult();
         } catch (Exception e) {
             return null;
         }
-       
+
     }
-    
-    
+
+    @Override
+    public boolean comprobarCodigoRepetido(Integer numeroRecibo) {
+        Query q = null;
+        int resultado = 0;
+        try {
+            q = em.createNativeQuery("select count(*) as codigoUsado from pago where numero_recibo = ?");
+            q.setParameter(1, numeroRecibo);
+            resultado = Integer.parseInt(q.getSingleResult().toString());
+        } catch (Exception e) {
+            resultado = -1;
+            e.printStackTrace();
+        }
+        if (resultado > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }

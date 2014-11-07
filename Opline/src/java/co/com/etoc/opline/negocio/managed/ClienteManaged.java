@@ -76,8 +76,7 @@ public class ClienteManaged extends ValidaSesion implements Serializable {
 
     //Método para guardar/insertar
     public String guardar() {
-        //En esta variable se guardará el mensaje que se imprime como respuesta.
-        String mensaje;
+        //En esta variable se guardará el mensaje que se imprime como respuesta.        
         try {
             //Se crea un objeto que almacenará los datos recogidos en la vista.
             Cliente cliente = new Cliente();
@@ -92,17 +91,15 @@ public class ClienteManaged extends ValidaSesion implements Serializable {
             //Se inserta el nuevo registro en la BD.
             this.localCliente.create(cliente);
             //Se asigna el mensaje de éxito de la operación en la variable mensaje.
-            mensaje = "Registro insertado correctamente.";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro guardado","Registro guardado."));
             //Se alimenta la lista, para que la vista pueda mostrar el nuevo empleado agregado. 
             this.limpiar();
         } catch (Exception e) {
             //Se asigna el mensaje de error de la operación en la variable mensaje.
-            mensaje = "Error al insertar el registro.";            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro no guardado.","Registro no guardado."));
         }
         //Se lanza el mensaje.
-        this.init();
-        FacesMessage msg = new FacesMessage(mensaje);
-        FacesContext.getCurrentInstance().addMessage(null, msg);        
+        this.init();                
         return "cliente.xhtml";
     }
 
@@ -128,16 +125,14 @@ public class ClienteManaged extends ValidaSesion implements Serializable {
         String mensaje;
         try {
             datos.setIdTipoCliente(new TipoCliente(tipoCliente2));
-            localCliente.edit(datos);
-            mensaje = "Registro editado satisfactoriamente.";
-            this.limpiar();
+            localCliente.edit(datos);            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro editado.","Registro editado."));
+            this.limpiar();           
         } catch (Exception e) {
-            System.out.println("Error en EmpleadoManaged al eliminar " + e.getMessage());
-            mensaje = "No se pudo deshabilitar el registro.";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro no editado.","Registro no editado."));
+            System.out.println("Error en EmpleadoManaged al eliminar " + e.getMessage());            
         }
-        this.init();
-        FacesMessage msg = new FacesMessage(mensaje);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        this.init();        
         return "cliente.xhtml";
     }
 

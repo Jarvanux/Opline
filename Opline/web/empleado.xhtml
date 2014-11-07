@@ -10,6 +10,7 @@
                 dlgSubirFoto.show();
             }
         </script>
+        <script src="js/traducirCalendario.js" type="text/javascript" />
     </h:head>
     <h:body>
         <p:dialog id="dlgSubirFoto2" widgetVar="dlgSubirFoto" resizable="false" header="Subir foto" showEffect="fade" hideEffect="explode">
@@ -127,6 +128,10 @@
                     <p:outputLabel id="correo2" value="#{empleadoManaged.datos.correo}" style="width:172px; text-align: left;"/>
                     <p:outputLabel for="direccion2" value="Dirección:" style="font-weight: bold;"/>
                     <p:outputLabel id="direccion2" value="#{empleadoManaged.datos.direccion}" style="width:172px; text-align: left;"/>                                         
+                    <p:outputLabel value="Fecha Nacimiento:" />
+                    <p:outputLabel value="#{empleadoManaged.datos.fechaNacimiento}" />
+                    <p:outputLabel value="Antiguedad:" />
+                    <p:outputLabel value="#{empleadoManaged.antiguedad()}" title="#{empleadoManaged.datos.fechaRegistro}" ><f:convertDateTime pattern="dd/MM/yyyy"/></p:outputLabel>
                 </p:panelGrid>
                 <p:panel  style="border:0px; text-align: right;">                        
                     <p:commandButton value="Volver atrás" oncomplete="PF('dlg2').hide()" />                     
@@ -154,6 +159,13 @@
                     <p:outputLabel for="apellidos33" value="Apellidos:" />
                     <p:inputText id="apellidos33" value="#{empleadoManaged.datos.apellido}" style="width:172px; text-align: left;" />
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenString2}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
+                    <p:outputLabel value="Genero:" for="sexoEditar"/>
+                    <p:selectOneMenu value="#{empleadoManaged.sexoEditar}" id="sexoEditar" style="width:180px; text-align: left;" >
+                        <f:selectItem  itemLabel="Seleccione" itemValue="-1"/>
+                        <f:selectItems var="sexosEditar" itemLabel="#{sexosEditar.descripcion}" itemValue="#{sexosEditar.idSexo}" 
+                                       value="#{sexoManaged.listaSexos}" />
+                    </p:selectOneMenu>
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenInteger2}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                     <p:outputLabel for="cedula33" value="Cedula:" />
                     <p:inputText id="cedula33" value="#{empleadoManaged.datos.cedula}" style="width:172px; text-align: left;" />
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenString3}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
@@ -172,6 +184,9 @@
                     <p:outputLabel for="direccion33" value="Dirección:" />
                     <p:inputText id="direccion33" value="#{empleadoManaged.datos.direccion}" style="width:172px; text-align: left;"/>                        
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenString8}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
+                    <p:outputLabel value="Fecha nacimiento:" for="fechaNac2" />
+                    <p:calendar id="fechaNac2" value="#{empleadoManaged.datos.fechaNacimiento}" locale="es" navigator="true" yearRange="c-70:c+0" pattern="dd/MM/yyyy"/>
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString10}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                     <p:outputLabel value="Clave:" />                                                                                                    
                     <p:commandButton value="Cambiar clave" actionListener="#{empleadoManaged.cambiarClave()}" onclick="PF('cargando').show()" oncomplete="PF('cargando').hide(); PF('dlgMensajeCreacion').show()" update=":form" ajax="true"/>
                 </p:panelGrid>                
@@ -213,6 +228,13 @@
                     <p:outputLabel for="apellidos" value="Apellidos:" />
                     <p:inputText id="apellidos" value="#{empleadoManaged.apellido}" style="width:172px; text-align: left;"/>
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenString2}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
+                    <p:outputLabel value="Genero:" for="sexo"/>
+                    <p:selectOneMenu value="#{empleadoManaged.sexo}" id="sexo" style="width:180px; text-align: left;" >
+                        <f:selectItem  itemLabel="Seleccione" itemValue="-1"/>
+                        <f:selectItems var="sexosEditar" itemLabel="#{sexosEditar.descripcion}" itemValue="#{sexosEditar.idSexo}" 
+                                       value="#{sexoManaged.listaSexos}" />
+                    </p:selectOneMenu>
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenInteger2}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                     <p:outputLabel for="cedula" value="Cedula:" />
                     <p:inputText id="cedula" value="#{empleadoManaged.cedula}" style="width:172px; text-align: left;"/>
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenString3}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
@@ -220,7 +242,7 @@
                     <p:inputText id="expedida" value="#{empleadoManaged.expedida}" style="width:172px; text-align: left;"/>  
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenString4}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                     <p:outputLabel for="celular" value="Celular:" />
-                    <p:inputMask id="celular" value="#{empleadoManaged.celular}" mask="(999) 999-9999" />
+                    <p:inputMask id="celular" value="#{empleadoManaged.celular}" mask="(999) 999-9999" style="width:172px; text-align: left;"/>
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenString5}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                     <p:outputLabel for="telefono" value="Teléfono:" />
                     <p:inputMask id="telefono" value="#{empleadoManaged.telefono}" mask="999-9999? x99999" style="width:172px; text-align: left;"/> 
@@ -231,6 +253,9 @@
                     <p:outputLabel for="direccion" value="Dirección:" />
                     <p:inputText id="direccion" value="#{empleadoManaged.direccion}" style="width:172px; text-align: left;"/>
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenString8}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />                    
+                    <p:outputLabel value="Fecha nacimiento:" for="fechaNac" />
+                    <p:calendar id="fechaNac" value="#{empleadoManaged.fechaNacimiento}" locale="es" navigator="true" style="width:172px; text-align: left;" yearRange="c-70:c+0" pattern="dd/MM/yyyy"/>
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString10}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />                    
                 </p:panelGrid>
                 <p:panel  style="border:0px;">
                     <p:commandButton value="Limpiar" actionListener="#{empleadoManaged.limpiar()}" oncomplete="PF('dlg').show()" update=":form:display, :form:fotoCrearEmpleado" style="font-size: 16px;"/>
@@ -283,15 +308,13 @@
                 <p:graphicImage id="img" value="../imagenes/loading.gif" style="width: 100px; height: 100px;" />
             </p:dialog> 
 
-            <p:dialog widgetVar="dlgMensajeCreacion" modal="false" resizable="false" header="Resultado operación" showEffect="fade" >
+            <p:dialog widgetVar="dlgMensajeCreacion" modal="false" resizable="false" header="Resultado operación" showEffect="fade" closable="false">
                 <p:panel style="width: 400px;">
                     <p:messages id="mensajeCreacion" autoUpdate="true"/>
-                    <p:commandButton value="Ok" icon="ui-icon-circle-check" onclick="PF('dlgMensajeCreacion').hide();" style="float: right;"/>
+                    <p:commandButton value="Ok" icon="ui-icon-circle-check" actionListener="#{empleadoManaged.limpiar()}" onclick="PF('dlgMensajeCreacion').hide();" style="float: right;"/>
                 </p:panel>
             </p:dialog> 
 
         </h:form>
-
-
     </h:body>
 </html>

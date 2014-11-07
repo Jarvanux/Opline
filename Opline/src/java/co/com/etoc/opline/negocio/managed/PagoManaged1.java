@@ -77,11 +77,9 @@ public class PagoManaged1 extends ValidaSesion implements Serializable {
 
     public void verifiqueUltimoPago() {
         try {
-            this.fechaUltimoPago = localPagoConvenio.ultimoPago(idVehiculo, idConvenio).getFechaConsignacion();
-            if(this.fechaUltimoPago == null){
-                this.fechaUltimoPago = new Date(); //Se optiene la fecha del sistema si no se ha realizado nunca ningún pago.
-            }
-        } catch (Exception e) {            
+            this.fechaUltimoPago = localPagoConvenio.ultimoPago(idVehiculo, idConvenio).getFechaConsignacion();            
+        } catch (Exception e) {
+            this.fechaUltimoPago = new Date();
         }
     }
 
@@ -160,8 +158,16 @@ public class PagoManaged1 extends ValidaSesion implements Serializable {
 
     //public boolean validar(, Double valorConsignacion) {
     public void validar() {
-        this.completo = ValidarFormularios.validar(numeroConsig, asociado,
-                idVehiculo, idConvenio, fechaUltimoPago, fechaInicio, fechaFin, valorConsignacion);
+        if (localPagoConvenio.comprobarCodigoRepetido(numeroConsig)) {
+            completo = false;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "El número de recibo se encuentra registrado en la Base de datos.", "El número de recibo ya se encuentra registrado."));
+        } else {
+            completo = true;
+        }
+        if (completo) {
+            this.completo = ValidarFormularios.validar(numeroConsig, asociado,
+                    idVehiculo, idConvenio, fechaUltimoPago, fechaInicio, fechaFin, valorConsignacion);
+        }
         if (completo) {
             this.guardar();
         }

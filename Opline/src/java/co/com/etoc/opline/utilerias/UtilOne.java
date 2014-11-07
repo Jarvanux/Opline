@@ -62,8 +62,16 @@ public class UtilOne {
      * @param tipo 0=TotalAños; 1=TotalMeses; 2=TotalDías; 3=MesesDelAnio;
      * 4=DiasDelMes
      * @return numero de días, meses o años de diferencia
-     */
-    public static String direncia(Date fechaInicio, Date fechaFin, int tipo) {
+     * Tomado de: http://felinfo.blogspot.com/2009/09/calcular-la-diferencia-en-dias-entre.html
+     * Alterado por: John Jaider Vanegas.
+     * Inicialmente el método recibia 3 párametros pero he dejado que el mismo método capture 
+     * la fecha actual del sistema que es la fecha fin que necesito calcular con la posteriormente
+     * recibida(fechaInicio).
+     */    
+    public static String diferencia(Date fechaInicio) {
+        //Parametrizamos
+        int tipo = 0;
+        Date fechaFin = new Date();
         // Fecha inicio
         Calendar calendarInicio = Calendar.getInstance();
         calendarInicio.setTime(fechaInicio);
@@ -187,6 +195,7 @@ public class UtilOne {
                 break;
         }
 
+        //Modificaciones - John Vanegas.
         String retorno = "";
         //Comparar para retorno
         if (returnValue != 0) {
@@ -200,4 +209,5 @@ public class UtilOne {
         }
         return retorno;
     }
+       
 }

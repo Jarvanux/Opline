@@ -191,7 +191,7 @@
                         </p:panel>                                    
                         <p:graphicImage value="../imagenes/#{validarFormularios.imagenInteger3}" style="width: 20px; height: 20px;" />
                         <p:outputLabel value="Fecha Ultimo Pago:" />
-                        <p:outputLabel id="fechaUltimoPago" value="#{pagoManaged1.fechaUltimoPago}" ><f:convertDateTime pattern="YYYY/MM/dd"/></p:outputLabel>
+                        <p:calendar id="fechaUltimoPago" value="#{pagoManaged1.fechaUltimoPago}" pattern="YYYY/MM/dd"/>
                         <p:graphicImage value="../imagenes/#{validarFormularios.imagenDate4}" style="width: 20px; height: 20px;" />
                         <p:outputLabel for="date" value="Hasta:" />
                         <p:calendar locale="es" id="date" value="#{pagoManaged1.fechaFin}" navigator="true" pattern="yyyy/MM/dd" />               

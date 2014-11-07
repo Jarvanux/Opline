@@ -10,6 +10,7 @@ import co.com.etoc.opline.persistencia.dao.InformacionEmpresaFacadeLocal;
 import co.com.etoc.opline.persistencia.entidades.Empleado;
 import co.com.etoc.opline.persistencia.entidades.InformacionEmpresa;
 import co.com.etoc.opline.persistencia.entidades.Menu;
+import co.com.etoc.opline.utilerias.UtilOne;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
@@ -60,7 +61,7 @@ public class LoginManaged implements Serializable{
     public void iniciarSesion() {
         FacesContext contexto = FacesContext.getCurrentInstance();
         try {
-            Empleado empleado = empleadoFacade.iniciarSesion(cedula, clave);
+            Empleado empleado = empleadoFacade.iniciarSesion(cedula, UtilOne.md5(clave));
             HttpSession sesion = (HttpSession) contexto.getExternalContext().getSession(true);
             sesion.setAttribute("empleado", empleado);
             contexto.getExternalContext().redirect("paginamaestra.xhtml");

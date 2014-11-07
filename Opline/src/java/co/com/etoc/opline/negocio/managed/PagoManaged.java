@@ -28,7 +28,7 @@ import org.primefaces.event.RowEditEvent;
  */
 @ManagedBean
 @ViewScoped
-public class PagoManaged extends ValidaSesion implements Serializable{
+public class PagoManaged extends ValidaSesion implements Serializable {
 
     private List<Pago> listaPagos;
     private List<Pago> filtroPagos;
@@ -62,9 +62,10 @@ public class PagoManaged extends ValidaSesion implements Serializable{
     }
 
     public void verifiqueUltimoPago() {
-        try{
-            this.fechaUltimoPago = localPago.ultimoPago(asociado.getIdAsociado(), idTipoPago).getFechaPago();    
-        }catch(Exception e){            
+        try {
+            this.fechaUltimoPago = localPago.ultimoPago(asociado.getIdAsociado(), idTipoPago).getFechaPago();
+        } catch (Exception e) {
+            this.fechaUltimoPago = new Date();
         }
     }
 
@@ -256,11 +257,19 @@ public class PagoManaged extends ValidaSesion implements Serializable{
     public void setIdTipoPago2(Integer idTipoPago2) {
         this.idTipoPago2 = idTipoPago2;
     }
-    
+
     //Validaciones
     public void validar() {
-        this.completo = ValidarFormularios.validar(numeroRecibo, asociado,
-                idTipoPago, fechaUltimoPago, fechaPagoFinal, valorPago);
+        if (this.localPago.comprobarCodigoRepetido(numeroRecibo)) {
+            completo = false;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "El número de recibo se encuentra registrado en la Base de datos.", "El número de recibo ya se encuentra registrado."));
+        } else {
+            completo = true;
+        }
+        if (completo) {
+            this.completo = ValidarFormularios.validar(numeroRecibo, asociado,
+                    idTipoPago, fechaUltimoPago, fechaPagoFinal, valorPago);
+        }
         if (completo) {
             this.guardar();
         }
@@ -280,6 +289,5 @@ public class PagoManaged extends ValidaSesion implements Serializable{
 
     public void setFechaPagoFinal(Date fechaPagoFinal) {
         this.fechaPagoFinal = fechaPagoFinal;
-    }        
+    }
 }
-

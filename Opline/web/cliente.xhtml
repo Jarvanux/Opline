@@ -13,7 +13,7 @@
 
     </h:head>
     <h:body> 
-        <p:growl id="mensaje2" autoUpdate="true" showSummary="false"  showDetail="true"/>                                     
+        <p:growl id="mensaje2" autoUpdate="false" showSummary="false"  showDetail="true"/>                                     
         <h:form id="form">   
             
             
@@ -38,7 +38,7 @@
                                 <p:inputText id="globalFilter" onkeyup="PF('tipoClienteTable').filter()" style="width:150px" placeholder="Ingrese criterio"/>
                             </p:outputPanel>
                         </f:facet>
-                        <p:ajax event="rowEdit" listener="#{tipoClienteManaged.onRowEdit}" />
+                        <p:ajax event="rowEdit" listener="#{tipoClienteManaged.onRowEdit}" update=":mensaje2"/>
                         <p:ajax event="rowEditCancel" listener="#{tipoClienteManaged.onRowCancel}"  />
                         <p:column headerText="Descripción" filterBy="#{tipoCliente.descripcion}" filterStyle="display:none"  filterMatchMode="contains">
                             <p:cellEditor>
@@ -67,8 +67,8 @@
                     <p:commandButton icon="ui-icon-close" actionListener="#{tipoClienteManaged.limpiar()}" oncomplete="PF('dlgTipoCliente').show()" update=":form:displayTipoCliente" style="width: 25px; height: 35px;" title="Limpiar"/>
                 </p:panel>
                 <p:panel  style="border:0px; text-align: right;">                    
+                    <p:commandButton value="Guardar" actionListener="#{tipoClienteManaged.guardar()}" oncomplete="PF('dlgTipoCliente').hide()" update=":form:contenedor, :mensaje2" />
                     <p:commandButton value="Cancelar" actionListener="#{tipoClienteManaged.limpiar()}" onclick="PF('dlgTipoCliente').hide()" update=":form:contenedor" />
-                    <p:commandButton value="Guardar" actionListener="#{tipoClienteManaged.guardar()}" oncomplete="PF('dlgTipoCliente').hide()" update=":form:contenedor" />
                 </p:panel>
             </p:dialog> 
             <!-- FIN CREACIÓN DE TIPO CLIENTE -->
@@ -79,7 +79,7 @@
                         <p:outputLabel value="El registro se eliminará de forma permantente ¿Está seguro de realizar este cambio?" />                   
                     </div>
                     <br></br>
-                    <p:commandButton value="Si" actionListener="#{tipoClienteManaged.eliminar()}"  onclick="PF('dlgEliminarTipoCliente').hide()" icon="ui-icon-check" update=":form:contenedor" />
+                    <p:commandButton value="Si" actionListener="#{tipoClienteManaged.eliminar()}"  onclick="PF('dlgEliminarTipoCliente').hide()" icon="ui-icon-check" update=":form:contenedor,:mensaje2" />
                     <p:commandButton value="No" onclick="PF('dlgEliminarTipoCliente').hide()" icon="ui-icon-close" />                                      
                 </div>
             </p:dialog>
@@ -113,7 +113,7 @@
             <!-- FIN DETALLES -->     
 
             <!-- EDITAR EMPLEADO -->
-            <p:dialog widgetVar="dlgEditarCliente" modal="false" resizable="false" header="Editar cliente" showEffect="clip" hideEffect="explode">                                 
+            <p:dialog widgetVar="dlgEditarCliente" modal="false" resizable="false" header="Editar cliente" showEffect="clip" hideEffect="explode">                                           
                 <p:panelGrid id="displayEditarCliente" columns="3" columnClasses="label,value" >                                                                        
                     <h:outputLabel value="Rol asignado:" for="roles33" />                    
                     <p:selectOneMenu value="#{clienteManaged.tipoCliente2}" id="roles33" style="width:180px; text-align: left;" >
@@ -142,7 +142,7 @@
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenString6}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                 </p:panelGrid>             
                 <p:panel  style="border:0px; text-align: right;">                                            
-                    <p:commandButton value="Guardar Cambios" action="#{clienteManaged.validarEdicion()}" update=":form"/>                     
+                    <p:commandButton value="Guardar Cambios" action="#{clienteManaged.validarEdicion()}" update=":form, :mensaje2"/>
                     <p:commandButton type="button" value="Cancelar" onclick="PF('dlgEditarCliente').hide()" />         
                 </p:panel>
             </p:dialog> 
@@ -156,7 +156,7 @@
             </script>
             <!-- FIN EDITAR -->                         
             <!-- CREACIÓN DE UN NUEVO EMPLEADO -->
-            <p:dialog widgetVar="dlgCrearCliente" modal="false" resizable="false" header="Crear Nuevo Cliente" showEffect="fade" hideEffect="explode"> 
+            <p:dialog widgetVar="dlgCrearCliente" modal="false" resizable="false" header="Crear Nuevo Cliente" showEffect="fade" hideEffect="explode">         
                 <p:panelGrid id="displayCrearCliente" columns="3" columnClasses="label,value">                                                            
                     <h:outputLabel value="Rol asignado:" for="roles"/>
                     <p:selectOneMenu value="#{clienteManaged.tipoCliente}" id="roles" style="width:180px; text-align: left;" >
@@ -187,7 +187,7 @@
                 <p:panel  style="border:0px;">
                     <p:commandButton value="Limpiar" actionListener="#{clienteManaged.limpiar()}" oncomplete="PF('dlgCrearCliente').show()" update=":form:displayCrearCliente" />
                     <p:commandButton value="Cancelar" actionListener="#{clienteManagede.limpiar()}" onclick="PF('dlgCrearCliente').hide()" update=":form" />                        
-                    <p:commandButton value="Guardar" actionListener="#{clienteManaged.validar()}"  icon="ui-icon-disk" style="font-size: 16px;" update=":form"/>
+                    <p:commandButton value="Guardar" actionListener="#{clienteManaged.validar()}"  icon="ui-icon-disk" style="font-size: 16px;" update=":form, :mensaje2"/>
                 </p:panel>
             </p:dialog>    
             <script type="text/javascript">

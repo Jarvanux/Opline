@@ -15,6 +15,7 @@ import co.com.etoc.opline.persistencia.entidades.InformacionEmpresa;
 import co.com.etoc.opline.persistencia.entidades.Reunion;
 import co.com.etoc.opline.persistencia.entidades.Vehiculo;
 import co.com.etoc.opline.utilerias.UtilOne;
+import java.io.File;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 /**
  *
@@ -340,10 +342,18 @@ public class ReunionManaged extends ValidaSesion implements Serializable {
                             + "</font>"
                             + "<div>";
 
-                    mail.envioCorreo("<H1>Notificación de Reunión ETOC</H1>", correo,
+                    //Se obtiene la ruta real del archivo.
+                    String nombreArchivo = "logoOpline.png";
+                    String asunto = "ETOC - Notificación de reunión ETOC.";
+                    String tituloContenido = "<H1>Notificación de Reunión ETOC</H1>";
+                    ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+                    String rutaArchivo = servletContext.getRealPath("") + File.separator + "imagenes"
+                            + File.separator;                    
+                    
+                    mail.envioCorreo(tituloContenido, correo,
                             informacion.getCorreo(), informacion.getClaveCorreo(),
-                            "ETOC - Notificación de reunión ETOC.", mensaje,
-                            firma, "C", "logoETOC.png");
+                            asunto, mensaje,
+                            firma, rutaArchivo, nombreArchivo);
                 }
                 return true;
             } else {

@@ -6,6 +6,7 @@
 package co.com.etoc.opline.persistencia.entidades;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -23,6 +24,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -70,7 +72,7 @@ public class Empleado implements Serializable {
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "cedula")
-    private String cedula;
+    private String cedula;    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 25)
@@ -92,10 +94,14 @@ public class Empleado implements Serializable {
     private String correo;
     @Column(name = "foto")
     private String foto;
+    @Column(name = "sexo")
+    private Integer sexo;
     @Column(name = "fecha_registro")
-    private String fechaRegistro;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaRegistro;
     @Column(name = "fecha_nacimiento")
-    private String fechaNacimiento;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaNacimiento;
     @JoinTable(name = "empleado_reunion", joinColumns = {
         @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado")}, inverseJoinColumns = {
         @JoinColumn(name = "id_reunion", referencedColumnName = "id_reunion")})
@@ -194,6 +200,14 @@ public class Empleado implements Serializable {
         this.direccion = direccion;
     }
 
+    public Integer getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Integer sexo) {
+        this.sexo = sexo;
+    }    
+
     public String getClave() {
         return clave;
     }
@@ -210,19 +224,19 @@ public class Empleado implements Serializable {
         this.correo = correo;
     }
 
-    public String getFechaRegistro() {
+    public Date getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(String fechaRegistro) {
+    public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }    
 
-    public String getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

@@ -38,4 +38,6 @@ public interface PagoConvenioFacadeLocal {
     PagoConvenio ultimoPago(Integer idAsociado);
     
     PagoConvenio ultimoPago(Integer idVehiculo, Integer idConvenio);
+
+    public boolean comprobarCodigoRepetido(Integer numeroRecibo);
 }

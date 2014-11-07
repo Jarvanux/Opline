@@ -22,7 +22,7 @@
                          rows="10"
                          rowsPerPageTemplate="10,25,50,100"                         
                          >
-                <f:facet name="header">               
+                <f:facet name="header">
                     <p:outputPanel style="text-align: right" > 
                         <p:outputLabel value="Tipo de pago:" for="tipoPago1" style="float:left; margin-top: 6px;" />
                         <p:selectOneMenu value="#{pagoManaged.listarPor}" id="tipoPago1" style="width:180px; text-align: left; float: left; margin-top: 5px; margin-left: 5px;" >
@@ -53,7 +53,7 @@
                     <h:outputText value="#{pago.idAsociado.nombre} #{pago.idAsociado.apellido}" />
                 </p:column>                                
                 <p:column headerText="Fecha del pago" sortBy="#{pago.fechaPago}" filterBy="#{pago.fechaPago}" filterStyle="display:none"  filterMatchMode="contains">                
-                    <h:outputText value="#{pago.fechaPago}" style="width:100%" ><f:convertDateTime pattern="YYYY/MM/dd" /></h:outputText>
+                    <h:outputText value="#{pago.fechaPago}" style="width:100%" ><f:convertDateTime pattern="dd/MM/yyyy" /></h:outputText>
                 </p:column>                         
                 <p:column headerText="Opciones" style="width:12%;">                                                            
                     <p:commandButton oncomplete="PF('dlgDetalles').show()" icon="ui-icon-circle-plus" style=" width: 25px; height: 25px; float: left;" title="Detalles" update=":form:displayDetalles" >
@@ -75,11 +75,11 @@
                         <p:outputLabel value="Razón de pago:" />
                         <p:outputLabel value="#{pagoManaged.pago.idTipoPago.nombrePago}" />
                         <p:outputLabel value="Fecha de pago:" />
-                        <p:outputLabel value="#{pagoManaged.pago.fechaPago}" ><f:convertDateTime pattern="YYYY/MM/dd" /></p:outputLabel>
+                        <p:outputLabel value="#{pagoManaged.pago.fechaPago}" ><f:convertDateTime pattern="dd/MM/yyyy" /></p:outputLabel>
                         <p:outputLabel value="Fecha Inicio:" />
-                        <p:outputLabel value="#{pagoManaged.pago.fechaInicio}" ><f:convertDateTime pattern="YYYY/MM/dd" /></p:outputLabel>
+                        <p:outputLabel value="#{pagoManaged.pago.fechaInicio}" ><f:convertDateTime pattern="dd/MM/yyyy" /></p:outputLabel>
                         <p:outputLabel value="Fecha Fin:" />
-                        <p:outputLabel value="#{pagoManaged.pago.fechaFin}" ><f:convertDateTime pattern="YYYY/MM/dd" /></p:outputLabel>
+                        <p:outputLabel value="#{pagoManaged.pago.fechaFin}" ><f:convertDateTime pattern="dd/MM/yyyy" /></p:outputLabel>
                         <p:outputLabel value="Valor de pago:" />
                         <p:outputLabel value="#{pagoManaged.pago.valorPago}" />
                         <p:outputLabel value="Observación:" />
@@ -126,10 +126,10 @@
                     </h:panelGroup>                    
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenInteger2}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                     <p:outputLabel value="Fecha Ultimo Pago:" />
-                    <p:outputLabel id="fechaUltimoPago" value="#{pagoManaged.fechaUltimoPago}" ><f:convertDateTime pattern="YYYY/MM/dd"/></p:outputLabel>
+                    <p:calendar id="fechaUltimoPago" value="#{pagoManaged.fechaUltimoPago}" pattern="dd/MM/yyyy" locale="es" navigator="true"/>
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenDate4}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                     <p:outputLabel for="date" value="Fecha de Pago fin:" />
-                    <p:calendar id="date" value="#{pagoManaged.fechaPagoFinal}" locale="es" navigator="true" pattern="yyyy/MM/dd" />               
+                    <p:calendar id="date" value="#{pagoManaged.fechaPagoFinal}" locale="es" navigator="true" pattern="dd/MM/yyyy" />               
                     <p:graphicImage value="../imagenes/#{validarFormularios.imagenDate1}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
                     <p:outputLabel for="vPago" value="ValorPago:" />
                     <p:inputText id="vPago" value="#{pagoManaged.valorPago}" />

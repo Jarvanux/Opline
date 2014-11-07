@@ -208,12 +208,20 @@ public class ValidarFormularios implements Serializable {
         }
     }
 
-    public static boolean validar(String nombre, String apellido, String cedula, String expedida, String celular, String telefono, String correo, String direccion, String clave, Integer rol) {
+    public static boolean validar(String nombre, String apellido, String cedula, String expedida, String celular, String telefono, String correo, String direccion, String clave, Integer rol, Integer sexo) {
         //Validando...                        
         boolean estado = true;
         String mensaje = "";
         //Validaciones de que los campos no estén vacios.
 
+        if (rol <= 0) {
+            mensaje = "Debe seleccionar un rol";
+            imagenInteger1 = "error.png";
+            estado = false;
+        } else {
+            imagenInteger1 = "null.gif";
+        }
+        
         if (nombre.length() <= 2) {
             mensaje = (nombre.length() == 0) ? "Se encontraron datos nulos, por favor corríjalos." : "Ha ingresado datos muy cortos, por favor corríjalos!.";
             imagenString1 = "error.png";
@@ -230,6 +238,14 @@ public class ValidarFormularios implements Serializable {
             imagenString2 = "null.gif";
         }
 
+         if (sexo <= 0) {
+            mensaje = "Debe seleccionar un sexo.";
+            imagenInteger2 = "error.png";
+            estado = false;
+        } else {
+            imagenInteger2 = "null.gif";
+        }
+         
         if (cedula.length() <= 2) {
             mensaje = (cedula.length() == 0) ? "Se encontraron datos nulos, por favor corríjalos." : "Ha ingresado datos muy cortos, por favor corríjalos!.";
             imagenString3 = "error.png";
@@ -252,16 +268,8 @@ public class ValidarFormularios implements Serializable {
             estado = false;
         } else {
             imagenString7 = "null.gif";
-        }
-
-        if (rol <= 0) {
-            mensaje = (rol < 0) ? "Se encontraron datos nulos, por favor corríjalos." : "Ha ingresado datos muy cortos, por favor corríjalos!.";
-            imagenInteger1 = "error.png";
-            estado = false;
-        } else {
-            imagenInteger1 = "null.gif";
-        }
-
+        }              
+        
         if (estado) {
             sizeXFinal = "0px";
             return true;
@@ -307,7 +315,7 @@ public class ValidarFormularios implements Serializable {
         } else {
             imagenDate1 = "null.gif";
             if (fechaPagoFinal.before(fechaUltimoPago)) {
-                mensaje = "Fecha final es menor que la fecha del ultimo pago";
+                mensaje = "Fecha final es menor que la fecha del último pago";
                 imagenDate4 = "error.png";
                 estado = false;
             }
@@ -373,7 +381,7 @@ public class ValidarFormularios implements Serializable {
         } else {
             imagenDate1 = "null.gif";
             if (fechaFin.before(fechaUltimoPago)) {
-                mensaje = "Fecha final es menor que la fecha del ultimo pago";
+                mensaje = "Fecha final es menor que la fecha del último pago";
                 imagenDate4 = "error.png";
                 imagenDate1 = "error.png";
                 estado = false;

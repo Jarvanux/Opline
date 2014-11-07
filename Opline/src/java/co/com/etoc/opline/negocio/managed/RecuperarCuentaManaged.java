@@ -11,6 +11,7 @@ import co.com.etoc.opline.persistencia.dao.InformacionEmpresaFacadeLocal;
 import co.com.etoc.opline.persistencia.entidades.Empleado;
 import co.com.etoc.opline.persistencia.entidades.InformacionEmpresa;
 import co.com.etoc.opline.utilerias.UtilOne;
+import java.io.File;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
@@ -20,6 +21,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 /**
  *
@@ -28,7 +30,10 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 @ViewScoped
 
-public class RecuperarCuentaManaged extends ValidaSesion implements Serializable{
+public class RecuperarCuentaManaged implements Serializable {
+    //No extiende de la clase ValidarSesion debido a que si lo hacemos
+    //cuando redireccionemos a la página nos renornará el login y 
+    //el usuario nunca podría acceder a recuperar la cuenta.
 
     //String cedula, String correo, String celular
     private String cedula;
@@ -58,7 +63,7 @@ public class RecuperarCuentaManaged extends ValidaSesion implements Serializable
             if (UtilOne.validarConexion()) {
                 if (empleado != null) {
                     EnvioCorreo mail = new EnvioCorreo();
-                    String claveNueva = ""+System.currentTimeMillis();
+                    String claveNueva = "" + System.currentTimeMillis();
                     DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
                     String fechaGeneracion = df.format(new Date());
                     String mensaje = ""
@@ -98,13 +103,20 @@ public class RecuperarCuentaManaged extends ValidaSesion implements Serializable
                             + "</font>"
                             + "<div>";
 
-                    mail.envioCorreo("<H1>Recuperación de contraseña</H1>", correo, informacion.getCorreo(), informacion.getClaveCorreo(), "Opline - Generación de contraseña automatica para recuperación de cuenta.", mensaje, firma, "C", "logoETOC.png");
+                    //Se obtiene la ruta real del archivo.
+                    String nombreArchivo = "logoOpline.png";                    
+                    String asunto = "Opline - Generación de contraseña automatica para recuperación de cuenta.";
+                    String tituloContenido = "<H1>Recuperación de contraseña</H1>";
+                    ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+                    String rutaArchivo = servletContext.getRealPath("") + File.separator + "imagenes"
+                            + File.separator;
+                    mail.envioCorreo(tituloContenido, correo, informacion.getCorreo(), informacion.getClaveCorreo(), asunto, mensaje, firma, rutaArchivo, nombreArchivo);
 
-                    try{
-                    empleado.setClave(claveNueva);
-                    empleado2FL.edit(empleado);
-                    }catch(Exception e){
-                        System.out.println("Error al editar clave en la BD: "+e.getMessage());
+                    try {
+                        empleado.setClave(claveNueva);
+                        empleado2FL.edit(empleado);
+                    } catch (Exception e) {
+                        System.out.println("Error al editar clave en la BD: " + e.getMessage());
                     }
                     FacesContext.getCurrentInstance().addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha enviado una contraseña nueva a tu correo electronico!.",
@@ -114,10 +126,10 @@ public class RecuperarCuentaManaged extends ValidaSesion implements Serializable
                             new FacesMessage(FacesMessage.SEVERITY_ERROR, "Los datos ingresados son invalidos!.",
                                     "Los datos ingresados son invalidos!."));
                 }
-            }else{
+            } else {
                 FacesContext.getCurrentInstance().addMessage(null,
-                            new FacesMessage(FacesMessage.SEVERITY_WARN, "SIN CONEXIÓN - Compruebe su conexión a internet!.",
-                                    "SIN CONEXIÓN - Compruebe su conexión a internet!."));
+                        new FacesMessage(FacesMessage.SEVERITY_WARN, "SIN CONEXIÓN - Compruebe su conexión a internet!.",
+                                "SIN CONEXIÓN - Compruebe su conexión a internet!."));
             }
         } catch (Exception e) {
             System.out.println("Error enviando mail");

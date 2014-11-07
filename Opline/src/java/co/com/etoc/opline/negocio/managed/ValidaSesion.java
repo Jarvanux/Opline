@@ -25,14 +25,18 @@ public class ValidaSesion implements Serializable {
 
     @PostConstruct
     public void validarSesion() {
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        Object objEmpleado = getSesion().getAttribute("empleado");
-        if (objEmpleado == null) {
-//            redireccionar("login.xhtml");
-        } else if (!request.getRequestURL().toString().contains("paginamaestra.xhtml") && request.getMethod().equalsIgnoreCase("GET")) {
-//            redireccionar("paginamaestra.xhtml");
-        } else {
-            empleado = (Empleado) objEmpleado;
+        try {
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            Object objEmpleado = getSesion().getAttribute("empleado");
+            if (objEmpleado == null) {
+                redireccionar("login.xhtml");
+            } else if (!request.getRequestURL().toString().contains("paginamaestra.xhtml") && request.getMethod().equalsIgnoreCase("GET")) {
+                redireccionar("paginamaestra.xhtml");
+            } else {
+                empleado = (Empleado) objEmpleado;
+            }
+        } catch (Exception e) {
+            redireccionar("login.xhtml");
         }
     }
 

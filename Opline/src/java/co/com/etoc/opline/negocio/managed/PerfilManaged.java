@@ -51,6 +51,7 @@ public class PerfilManaged extends ValidaSesion implements Serializable {
         PrincipalManagedBean pmb = new PrincipalManagedBean();
         pmb.setRutaActual("Configuración\\Mi perfil");
         foto = "imagenesSistema/perfilPredeterminado.png";
+        completoEditar = true;
         datosEmpleado = empleado;
     }
 
@@ -187,7 +188,7 @@ public class PerfilManaged extends ValidaSesion implements Serializable {
 
     //Validamos que el formulario no tenga datos nulos.
     public void validarEditar() {
-        this.completoEditar = ValidarFormularios.validar(datosEmpleado.getNombre(), datosEmpleado.getApellido(), datosEmpleado.getCedula(), datosEmpleado.getExpedida(), datosEmpleado.getCelular(), datosEmpleado.getTelefono(), datosEmpleado.getCorreo(), datosEmpleado.getDireccion(), datosEmpleado.getClave(), datosEmpleado.getIdRol().getIdRol());
+        this.completoEditar = ValidarFormularios.validar(datosEmpleado.getNombre(), datosEmpleado.getApellido(), datosEmpleado.getCedula(), datosEmpleado.getExpedida(), datosEmpleado.getCelular(), datosEmpleado.getTelefono(), datosEmpleado.getCorreo(), datosEmpleado.getDireccion(), datosEmpleado.getClave(), datosEmpleado.getIdRol().getIdRol(),datosEmpleado.getSexo());
         if (completoEditar) {
             this.editar();
         }

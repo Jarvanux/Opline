@@ -17,6 +17,7 @@ import co.com.etoc.opline.persistencia.entidades.HistorialEstado;
 import co.com.etoc.opline.persistencia.entidades.InformacionEmpresa;
 import co.com.etoc.opline.persistencia.entidades.Menu;
 import co.com.etoc.opline.persistencia.entidades.Opcion;
+import co.com.etoc.opline.persistencia.entidades.Sexos;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -51,6 +52,8 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
     private RolesManaged lr = new RolesManaged();
     private List<Empleado> listaEmpleado;
     private List<Empleado> filtroEmpleado;
+    private List<Sexos> listaSexos;
+
     @EJB
     private EmpleadoFacadeLocal localEmpleado;
     private HistorialEstadoFacadeLocal historialEstadoFL;
@@ -79,6 +82,8 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
     private String foto;
     private String visibilidadBotonEditar;
     private Date fechaNacimiento;
+    private Integer sexo;
+    private Integer sexoEditar;
 
     private Integer rolEdit;
     private String iconoAyD;
@@ -100,9 +105,8 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
     @PostConstruct
     //Se inicializa la lista que leerá la vista(JSF).
     public void init() {
-        PrincipalManagedBean pmb = new PrincipalManagedBean();
-        pmb.setRutaActual("Empleados\\Ver Registros");
-
+//        PrincipalManagedBean pmb = new PrincipalManagedBean();
+//        pmb.setRutaActual("Empleados\\Ver Registros");           
         this.predeterminarImagen();
         this.completo = true;
         this.completoEditar = true;
@@ -121,6 +125,10 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
 
     public void predeterminarImagen() {
         this.foto = "imagenesRegistros/fotosEmpleados/perfilPredeterminado.png";
+    }
+
+    public String antiguedad() {
+        return UtilOne.diferencia(this.datos.getFechaRegistro());
     }
 
     public String listarPorPreferencia() {
@@ -167,9 +175,10 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
             empleado.setCorreo(correo);
             empleado.setDireccion(direccion);
             empleado.setFoto(foto);
+            empleado.setFechaNacimiento(fechaNacimiento);
+            empleado.setFechaRegistro(new Date());
             clave = ((Long) System.currentTimeMillis()).toString();
-            empleado.setClave(clave);
-
+            empleado.setClave(UtilOne.md5(clave));
             if (this.enviarContraseña(this.correo, this.clave, this.cedula)) {
                 empleado.setIdEstado(new Estado(1));
             } else {
@@ -207,6 +216,7 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
 
     public void prepararEdicion(Empleado empleado) {
         rolEdit = empleado.getIdRol().getIdRol();
+        sexoEditar = empleado.getSexo();
         foto = empleado.getFoto();
         datos = empleado;
     }
@@ -215,6 +225,7 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
         String mensaje;
         try {
             datos.setIdRol(new Rol(rolEdit));
+            datos.setSexo(sexoEditar);
             localEmpleado.edit(datos);
             mensaje = "Registro editado satisfactoriamente.";
             this.limpiar();
@@ -230,12 +241,16 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
     public void cambiarClave() throws Exception {
         this.seEditaraClave = true;
         String claveEnviar = ((Long) System.currentTimeMillis()).toString();
-        this.enviarContraseña(datos.getCorreo(), claveEnviar, datos.getCedula());
+        if (UtilOne.validarConexion()) {
+            this.enviarContraseña(datos.getCorreo(), claveEnviar, datos.getCedula());
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Sin Conexión para modificar y enviar una contraseña nueva.", ""));
+        }
     }
 
-    public void prepareDatos(Empleado empleado) {       
+    public void prepareDatos(Empleado empleado) {
         this.listarPorPreferencia();
-        this.datos2 = empleado;        
+        this.datos2 = empleado;
     }
 
     //Metodo deshabilitar.
@@ -246,7 +261,7 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
             localEmpleado.edit(datos2);
             listaEmpleado = localEmpleado.activos();
             if (this.estadoAyD == 2) {
-                this.listarPor = "Activos";                                                                                                               
+                this.listarPor = "Activos";
                 mensaje = "Registro deshabilitado satisfactoriamente.";
             } else {
                 this.listarPor = "Deshabilitados";
@@ -398,11 +413,26 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
                         + "</font>"
                         + "<div>";
 
-                mail.envioCorreo("<H1>Información de cuenta registrada</H1>", correoReceptor, informacion.getCorreo(), informacion.getClaveCorreo(), "Opline - Información de ingreso para su nueva cuenta.", mensaje, firma, "C", "logoETOC.png");
+                //Se obtiene la ruta real del archivo.
+                String nombreArchivo = "logoOpline.png";
+                String asunto = "Opline - Información de ingreso para su nueva cuenta.";
+                String tituloContenido = "<H1>Información de cuenta registrada</H1>";
+                ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+                String rutaArchivo = servletContext.getRealPath("") + File.separator + "imagenes"
+                        + File.separator;
+                mail.envioCorreo(tituloContenido, correoReceptor, informacion.getCorreo(), informacion.getClaveCorreo(), asunto, mensaje, firma, rutaArchivo, nombreArchivo);
                 if (seEditaraClave) {
-                    FacesContext.getCurrentInstance().addMessage(null,
-                            new FacesMessage(FacesMessage.SEVERITY_INFO, "Clave actualizada y enviada satisfactoriamente!.",
-                                    "Clave actualizada y enviada satisfactoriamente!."));
+                    try {
+                        datos.setClave(UtilOne.md5(claveNueva));
+                        localEmpleado.edit(datos);
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_INFO, "Clave actualizada y enviada satisfactoriamente!.",
+                                        "Clave actualizada y enviada satisfactoriamente!."));
+                    } catch (Exception e) {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_INFO, "No se pudo actualizar la clave.",
+                                        "No se pudo actualizar la clave."));
+                    }
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_INFO, "Empleado creado satisfactoriamente.",
@@ -577,7 +607,7 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
             completo = true;
         }
         if (completo) {
-            this.completo = ValidarFormularios.validar(nombre, apellido, cedula, expedida, celular, telefono, correo, direccion, clave, rol);
+            this.completo = ValidarFormularios.validar(nombre, apellido, cedula, expedida, celular, telefono, correo, direccion, clave, rol, sexo);
         }
         if (completo) {
             this.guardar();
@@ -592,7 +622,7 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
             completoEditar = true;
         }
         if (completoEditar) {
-            this.completoEditar = ValidarFormularios.validar(datos.getNombre(), datos.getApellido(), datos.getCedula(), datos.getExpedida(), datos.getCelular(), datos.getTelefono(), datos.getCorreo(), datos.getDireccion(), datos.getClave(), datos.getIdRol().getIdRol());
+            this.completoEditar = ValidarFormularios.validar(datos.getNombre(), datos.getApellido(), datos.getCedula(), datos.getExpedida(), datos.getCelular(), datos.getTelefono(), datos.getCorreo(), datos.getDireccion(), datos.getClave(), this.rolEdit, this.sexoEditar);
         }
         if (completoEditar) {
             this.editar();
@@ -606,7 +636,6 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
 //            this.editar();
 //        }
 //    }
-
     //Fin metodos SET & GET
     //--------------------------------------------------------------------------
     public Empleado getDatos() {
@@ -704,5 +733,21 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-    
+
+    public Integer getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Integer sexo) {
+        this.sexo = sexo;
+    }
+
+    public Integer getSexoEditar() {
+        return sexoEditar;
+    }
+
+    public void setSexoEditar(Integer sexoEditar) {
+        this.sexoEditar = sexoEditar;
+    }
+
 }

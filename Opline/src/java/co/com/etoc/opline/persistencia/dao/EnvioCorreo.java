@@ -108,7 +108,7 @@ public class EnvioCorreo {
 
             // second part (the image)
             messageBodyPart = new MimeBodyPart();
-            DataSource fds = new FileDataSource(ruta+":\\"+archivo);
+            DataSource fds = new FileDataSource(ruta+archivo);
             messageBodyPart.setDataHandler(new DataHandler(fds));
             messageBodyPart.setHeader("Content-ID", "<image>");
 
