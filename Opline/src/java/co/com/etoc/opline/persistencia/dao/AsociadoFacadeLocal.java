@@ -32,5 +32,9 @@ public interface AsociadoFacadeLocal {
     List<Asociado> findRange(int[] range);
 
     int count();
+
+    public long consultarPagos(String documento);
+
+    public Asociado consultarAsosicado(String cedula);
     
 }

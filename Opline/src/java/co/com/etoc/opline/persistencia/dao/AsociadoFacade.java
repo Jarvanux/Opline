@@ -39,10 +39,36 @@ public class AsociadoFacade extends AbstractFacade<Asociado> implements Asociado
             x.setParameter(1, IdAsociado);
             x.executeUpdate();
             //System.out.println("Consulta parametro1: "+q.getParameterValue(1));
-            System.out.println("Consulta single result: "+x.getSingleResult());
-            System.out.println("Consulta toString() "+x.toString());
+            System.out.println("Consulta single result: " + x.getSingleResult());
+            System.out.println("Consulta toString() " + x.toString());
         } catch (Exception e) {
-            System.out.println("Error deshabilitar AsociadoFacade: "+e.getMessage());
+            System.out.println("Error deshabilitar AsociadoFacade: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public long consultarPagos(String documento) {
+        Query q = null;
+        long resultado = 0;
+        try {
+            q = em.createNativeQuery("SELECT id_asociado FROM asociado WHERE cedla = ? LIMIT 1");
+            q.setParameter(1, documento);
+
+        } catch (Exception e) {
+            System.out.println("No consulto el id" + e.getMessage());
+        }
+        return q.getFirstResult();
+    }
+    
+    @Override
+    public Asociado consultarAsosicado(String cedula){
+        Query q = null;
+        try {
+            q = em.createNativeQuery("select * from asociado where cedula = ? limit 1",Asociado.class);
+            q.setParameter(1, cedula);
+            return (Asociado)q.getSingleResult();
+        } catch (Exception e) {
+            return null;
         }
     }
 }

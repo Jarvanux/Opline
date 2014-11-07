@@ -55,7 +55,7 @@ public class PagoFacade extends AbstractFacade<Pago> implements PagoFacadeLocal 
         }
 
     }
-
+    
     @Override
     public Pago ultimoPago(Integer idAsociado) {
         Query q = null;
@@ -97,4 +97,15 @@ public class PagoFacade extends AbstractFacade<Pago> implements PagoFacadeLocal 
         }
     }
 
+    @Override
+    public List<Pago> consultarPagosAsociado(Integer id){
+        Query q = null;
+        try {
+            q = em.createNativeQuery("select * from pago where id_asociado = ?", Pago.class);
+            q.setParameter(1, id);
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

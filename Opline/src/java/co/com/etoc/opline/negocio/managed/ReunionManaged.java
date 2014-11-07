@@ -204,9 +204,12 @@ public class ReunionManaged extends ValidaSesion implements Serializable {
                     vehiculosAgregados.add(vehiculosSeleccionados.get(i));
                 }//Fin primera condición                                   
             }//Fin for 1 primario.
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registros Agregados"));
+            System.out.println(vehiculosAgregados);
         }//Fin condición global.
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registros Agregados"));
-        System.out.println(vehiculosAgregados);
+        else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "","Ningun registro seleccionado!."));
+        }
     }
 
     public void agregarAListaEmpleados() {
@@ -348,8 +351,8 @@ public class ReunionManaged extends ValidaSesion implements Serializable {
                     String tituloContenido = "<H1>Notificación de Reunión ETOC</H1>";
                     ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
                     String rutaArchivo = servletContext.getRealPath("") + File.separator + "imagenes"
-                            + File.separator;                    
-                    
+                            + File.separator;
+
                     mail.envioCorreo(tituloContenido, correo,
                             informacion.getCorreo(), informacion.getClaveCorreo(),
                             asunto, mensaje,

@@ -35,6 +35,9 @@ public class PagoManaged extends ValidaSesion implements Serializable {
 
     @EJB
     private PagoFacadeLocal localPago;
+    @EJB
+    private AsociadoFacadeLocal localAsociado;
+    
     private Integer numeroRecibo;
     private Integer idAsociado;
     private Integer idTipoPago;
@@ -67,6 +70,11 @@ public class PagoManaged extends ValidaSesion implements Serializable {
         } catch (Exception e) {
             this.fechaUltimoPago = new Date();
         }
+    }
+    
+    public void consultarPagosAsociado(String documento){
+        this.asociado = localAsociado.consultarAsosicado(documento);        
+        this.listaPagos = localPago.consultarPagosAsociado(asociado.getIdAsociado());
     }
 
     //Método para guardar/insertar

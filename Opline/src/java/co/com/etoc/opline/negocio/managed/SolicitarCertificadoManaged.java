@@ -30,13 +30,16 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class SolicitarCertificadoManaged extends ValidaSesion implements Serializable{
+public class SolicitarCertificadoManaged extends ValidaSesion implements Serializable {
 
     private String para;
     private Empleado empleadoM;
     private Asociado asociado;
     private List<Certificado> listaCertificados;
     private List<Certificado> filtroCertificados;
+    private List<Empleado> empleadosSeleccionados;
+    private List<Asociado> asociadosSeleccionados;
+    private List<Conductor> conducotresSeleccionados;
     private String respuesta;
     private Conductor conductor;
 
@@ -44,33 +47,59 @@ public class SolicitarCertificadoManaged extends ValidaSesion implements Seriali
     CertificadoFacadeLocal certificadoFL;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         PrincipalManagedBean pmb = new PrincipalManagedBean();
         pmb.setRutaActual("Certificado\\SolicitarCertificado");
 //        listaCertificados = certificadoFL.consultarPorEmpleado(this.empleado.getIdEmpleado());
     }
-   
-    public void solicitudEmpleado(){
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"","Solicitud enviada!"));
+
+    public void agregarEmpleadosALista() {
+        if (this.empleadosSeleccionados.size() > 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Registros Agregados."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "", "Ningun registro seleccionado!."));
+        }
     }
-    public void solicitudAsociado() {        
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"","Solicitud enviada!"));    
+
+    public void agregarConductoresALista() {
+        if (this.empleadosSeleccionados.size() > 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Registros Agregados."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "", "Ningun registro seleccionado!."));
+        }
     }
-    public void solicitudConductor(){
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"","Solicitud enviada!"));            
+
+    public void agregarAsociadosALista() {
+        if (this.empleadosSeleccionados.size() > 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Registros Agregados."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "", "Ningun registro seleccionado!."));
+        }
     }
-    
-    
-    public void validarRespuesta(Certificado certificado){
+
+    public void solicitudEmpleado() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Solicitud enviada!"));
+    }
+
+    public void solicitudAsociado() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Solicitud enviada!"));
+    }
+
+    public void solicitudConductor() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Solicitud enviada!"));
+    }
+
+    public void validarRespuesta(Certificado certificado) {
         try {
-            if(certificado.getRespuesta().length() <= 0){
+            if (certificado.getRespuesta().length() <= 0) {
                 this.respuesta = "La solicitud aún no ha sido respondida.";
-            }else{
+            } else {
                 this.respuesta = "La solicitud ha sido respondida, precione el botón más para ver más detalles.";
             }
         } catch (Exception e) {
         }
     }
+
     public String solicitarPara() {
         return this.para;
     }
@@ -105,7 +134,7 @@ public class SolicitarCertificadoManaged extends ValidaSesion implements Seriali
 
     public void setListaCertificados(List<Certificado> listaCertificados) {
         this.listaCertificados = listaCertificados;
-    }        
+    }
 
     public List<Certificado> getFiltroCertificados() {
         return filtroCertificados;
@@ -113,7 +142,7 @@ public class SolicitarCertificadoManaged extends ValidaSesion implements Seriali
 
     public void setFiltroCertificados(List<Certificado> filtroCertificados) {
         this.filtroCertificados = filtroCertificados;
-    }    
+    }
 
     public String getRespuesta() {
         return respuesta;
@@ -121,7 +150,7 @@ public class SolicitarCertificadoManaged extends ValidaSesion implements Seriali
 
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
-    }    
+    }
 
     public Conductor getConductor() {
         return conductor;
@@ -129,5 +158,30 @@ public class SolicitarCertificadoManaged extends ValidaSesion implements Seriali
 
     public void setConductor(Conductor conductor) {
         this.conductor = conductor;
-    }    
+    }
+
+    public List<Empleado> getEmpleadosSeleccionados() {
+        return empleadosSeleccionados;
+    }
+
+    public void setEmpleadosSeleccionados(List<Empleado> empleadosSeleccionados) {
+        this.empleadosSeleccionados = empleadosSeleccionados;
+    }
+
+    public List<Asociado> getAsociadosSeleccionados() {
+        return asociadosSeleccionados;
+    }
+
+    public void setAsociadosSeleccionados(List<Asociado> asociadosSeleccionados) {
+        this.asociadosSeleccionados = asociadosSeleccionados;
+    }
+
+    public List<Conductor> getConducotresSeleccionados() {
+        return conducotresSeleccionados;
+    }
+
+    public void setConducotresSeleccionados(List<Conductor> conducotresSeleccionados) {
+        this.conducotresSeleccionados = conducotresSeleccionados;
+    }
+
 }

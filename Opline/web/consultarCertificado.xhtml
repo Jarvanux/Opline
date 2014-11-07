@@ -1,14 +1,77 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:form>
-            <img src="imagenes/parche.jpg" />
+        <h:form id="form">
+            
+            <p:dataTable id="table" var="certificado" widgetVar="certificadoTable"  editable="true"
+                         value="#{consultarCertificadoManagedBean.listarCertificado}" emptyMessage="No hay certificados"
+                         filteredValue="#{consultarCertificadoManagedBean.filtrarCertificado}"
+                         selectionMode="single"
+                         rowKey="#{certificado.idCertificado}"
+                         >
+                
+                <f:facet name="header">
+                    <p:outputPanel >
+                        <p:selectOneRadio id="listarPor" columns="4" value="#{consultarCertificadoManagedBean.listarPor}" >
+                            <f:selectItem itemLabel="Aprobados" itemValue="aprobado"   id="apro"/>
+                            <f:selectItem  itemLabel="Rechazados" itemValue="rechazado" id="rech"  />
+                            <p:ajax listener="#{consultarCertificadoManagedBean.listarPorPreferencia()}" update=":form:table" onstart="PF('certificadoTable').filter()"></p:ajax>
+                        </p:selectOneRadio>
+                            <p:inputText id="globalFilter" onkeyup="PF('certificadoTable').filter()" placeholder="Filtar por"/>
+                    </p:outputPanel>
+                </f:facet>
+                <p:column headerText="Cedula" filterBy="#{certificado.documentoSolicitante}">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{certificado.documentoSolicitante}"></h:outputText></f:facet>
+                        <f:facet name="input"><p:inputText id="documento" value="#{certificado.documentoSolicitante}"></p:inputText></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Opciones">
+                    <p:commandButton id="pago" icon=" ui-icon-plus">
+                        <p:ajax listener="#{consultarCertificadoManagedBean.prepararDatos(certificado)}" />
+                        <p:ajax onstart="PF('dlgCrearPago').show()" update=":form:displayCrearPago"/>
+                    </p:commandButton>
+                    <p:commandButton id="certificar" icon="ui-icon-document" style=""/>
+                </p:column>
+            </p:dataTable>
+            
+           
+            
+            <p:dialog widgetVar="dlgCrearPago" modal="false" resizable="false" header="Pago" showEffect="fade">               
+                <p:panelGrid id="displayCrearPago" columns="2" columnClasses="label,value">
+                    <p:outputLabel value="No recibo"></p:outputLabel>
+                    <p:inputText id="noReci" value="#{consultarCertificadoManagedBean.numero}"></p:inputText>
+                    <p:outputLabel value="Tipo de pago"></p:outputLabel>
+                    <p:outputLabel value="Certificado"></p:outputLabel>
+                    <p:outputLabel value="Nombre" ></p:outputLabel>
+                    <p:inputText value="#{consultarCertificadoManagedBean.a.nombre} #{consultarCertificadoManagedBean.a.apellido}" id="nombreA" disabled="true">
+                    </p:inputText>
+                    
+                    <p:outputLabel value="Fecha pago"/>
+                    <p:calendar id="date" locale="es"  navigator="true" pattern="yyyy/MM/dd" value="#{consultarCertificadoManagedBean.fechaPago}"></p:calendar>
+                    <p:outputLabel value="Valor del pago"></p:outputLabel>
+                    <p:inputText id="valor" value="#{consultarCertificadoManagedBean.valor}"  ></p:inputText>
+          
+                    <p:outputLabel value="Observaciones"></p:outputLabel>
+                    <p:inputTextarea id="observacion" value="#{consultarCertificadoManagedBean.obser}">
+                        
+                    </p:inputTextarea>
+                    
+                </p:panelGrid>
+                 <h:inputHidden  id="idAs" value="#{consultarCertificadoManagedBean.a.idAsociado} #{consultarCertificadoManagedBean.idAsoci}" ></h:inputHidden>
+                 <p:commandButton id="realizarPago" value="Guardar" actionListener="#{consultarCertificadoManagedBean.registrar()}" oncomplete="PF('dlgCrearPago').hide()">
+                    
+                </p:commandButton>
+            </p:dialog>
         </h:form>
     </h:body>
 </html>
+
 

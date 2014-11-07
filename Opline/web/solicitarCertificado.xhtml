@@ -23,9 +23,9 @@
                         <p:outputLabel for="cbxSolicitarPara" value="Seleccione el Solicitante:" />
                         <p:selectOneMenu id="cbxSolicitarPara" value="#{solicitarCertificadoManaged.para}">                        
                             <f:selectItem itemLabel="Seleccione" itemValue="" />
-                            <f:selectItem itemLabel="Empleado" itemValue="dlgEmpleado" />
-                            <f:selectItem itemLabel="Asociado" itemValue="dlgAsociado" />                            
-                            <f:selectItem itemLabel="Conductor" itemValue="dlgConductor" />
+                            <!--<f:selectItem itemLabel="Empleado" itemValue="dlgEmpleado" /> No se implementa en el momento x cuestiones de tiempo de desarrollo-->
+                            <f:selectItem itemLabel="Asociado" itemValue="dlgAsociado" />
+                            <f:selectItem itemLabel="Conductor" itemValue="dlgConductor"/>
                             <p:ajax update=":form"/>
                         </p:selectOneMenu>
                         <p:commandButton value="Aceptar" onclick="PF('#{solicitarCertificadoManaged.para}').show()" />                
@@ -33,60 +33,53 @@
                     <p:panel>                                               
                     </p:panel>
                     <!-- Detalles Pago -->
+                    
+                    <!--Se dejará este dialogo con la lista que permitirá al usuario
+                    seleccionar los empleados para las siguientes manipulaciones que tenga
+                    el proyecto. Pues fue creado para programar la certificación de
+                    empledos. -->
                     <p:dialog widgetVar="dlgEmpleado" modal="false" resizable="false" header="Solicitud para empleado" showEffect="puff" >
                         <p:panel id="displayConfigAsistencia2" style="max-height: 500px; width: 500px; overflow: auto;">
-                            <p:dataTable id="checkEmpleados" var="empleados" value="#{reunionManaged.listaEpleados}"
-                                         selection="#{reunionManaged.empleadosSeleccionados}" 
-                                         rowKey="#{empleados.idEmpleado}" style="margin-bottom:0; width: 100%; float: left;" 
-                                         widgetVar="tablaEmpleados" filteredValue="#{reunionManaged.filtroEmpleado}" 
-                                         emptyMessage="No hay registros" 
-
+                            <p:dataTable id="tabla" var="empleado" value="#{empleadoManaged.listaEmpleado}" widgetVar="empleadoTable" style="margin-bottom:20px; font-family: calibri; width: 100%;"
+                                         selection="#{solicitarCertificadoManaged.empleadosSeleccionados}"
+                                         emptyMessage="No hay registros" filteredValue="#{empleadoManaged.filtroEmpleado}"                         
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                         paginator="true"
-                                         rows="6"                                                                        
-                                         >
-                                <f:facet name="header">                    
-                                    <p:selectOneMenu value="#{reunionManaged.idEstado}" id="estado" style="width:180px; text-align: left;  margin-top: 5px; margin-left: 5px;" >
-                                        <f:selectItem itemLabel="Activos" itemValue="1" />
-                                        <f:selectItem itemLabel="Deshabilitados" itemValue="2" />
-                                        <p:ajax listener="#{reunionManaged.listarPorEstado()}" update=":form:displayConfigAsistencia2"  />
-                                        <p:ajax update=":form:displayConfigAsistencia2" />
-                                    </p:selectOneMenu>                      
-                                </f:facet> 
-
-                                <p:columnGroup type="header">                       
-                                    <p:row>
-                                        <p:column selectionMode="multiple"/>
-                                        <p:column headerText="Rol" />
-                                        <p:column headerText="Cédula" />
-                                        <p:column headerText="Nombre" />
-                                    </p:row>
-                                </p:columnGroup>             
-                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>                                                                  
-
-                                <p:column headerText="Placa">
-                                    <h:outputText value="#{empleados.idRol.nombre}" />
-                                </p:column>                                                                            
-
-                                <p:column>
-                                    <h:outputText value="#{empleados.cedula}" />
-                                </p:column>
-                                <p:column>
-                                    <h:outputText value="#{empleados.nombre} #{empleados.apellido}" />                    
-                                </p:column>                       
-                                <f:facet name="footer">                    
-                                    <p:outputLabel value="Empleados: #{reunionManaged.numeroRegistros2}" />
+                                         paginator="true"                                                                                  
+                                         rowKey="#{empleado.idEmpleado}"
+                                         rows="6"                                                                                                                                                     
+                                         >                             
+                                <f:facet name="header">
+                                    <p:outputPanel style="text-align: right; font-family: calibri;" >                                      
+                                        <p:selectOneRadio id="listarPor"  columns="4" value="#{empleadoManaged.listarPor}" style=" width: 300px; float: left;"  >
+                                            <f:selectItem itemLabel="Activos" itemValue="Activos" />
+                                            <f:selectItem itemLabel="Deshabilitados" itemValue="Dehabilitados" />                              
+                                            <p:ajax listener="#{empleadoManaged.listarPorPreferencia()}" update=":form:tabla"  onstart="PF('empleadoTable').filter()"/>
+                                        </p:selectOneRadio>                                                          
+                                        <p:inputText id="globalFilter" onkeyup="PF('empleadoTable').filter()" style="width:150px; " placeholder="Buscar" />                        
+                                    </p:outputPanel>                   
                                 </f:facet>
-                            </p:dataTable>
-                            <h:panelGrid columns="3" style="margin: 0 auto;">
-                                <p:commandButton value="Agregar a la lista" actionListener="#{reunionManaged.agregarAListaEmpleados()}" title="Agregar a la lista" style="margin-left: 20px; font-size: 13px;" update=":form:displayConfigAsistencia2" />
-                                <p:commandButton value="Finalizar configuración"  onclick="PF('dlgConfigAsistencia2').hide()" style="font-size: 13px;" title="Finalizar Configuración"/>
-                                <p:commandButton value="Todos" actionListener="#{reunionManaged.todosLosEmpleados()}" onclick="PF('dlgConfigAsistencia2').hide()" style="font-size: 13px;"/>
+                                <p:column selectionMode="multiple" >                                    
+                                </p:column>
+                                <p:column headerText="Rol" filterBy="#{empleado.idRol.nombre}" filterStyle="display:none"  filterMatchMode="contains">                    
+                                    <h:outputText value="#{empleado.idRol.nombre}" />
+                                </p:column>
+                                <p:column headerText="Cedula" filterBy="#{empleado.cedula}" filterStyle="display:none"  filterMatchMode="contains">                    
+                                    <h:outputText value="#{empleado.cedula}" />
+                                </p:column>                
+                                <p:column headerText="Asociado" filterBy="#{empleado.nombre} #{empleado.apellido}" filterStyle="display:none"  filterMatchMode="contains">                    
+                                    <h:outputText value="#{empleado.nombre} #{empleado.apellido}" />                                            
+                                </p:column>                                
+                            </p:dataTable>   
+                            <h:panelGrid columns="2" style="margin: 0 auto;">
+                                <p:commandButton value="Agregar a la lista" actionListener="#{solicitarCertificadoManaged.agregarEmpleadosALista()}" title="Agregar a la lista" style="margin-left: 20px; font-size: 13px;" update=":form:displayConfigAsistencia2" />
+                                <p:commandButton value="Finalizar configuración"  onclick="PF('dlgConfigAsistencia2').hide()" style="font-size: 13px;" title="Finalizar Configuración"/>                                
                             </h:panelGrid>
                         </p:panel>
-                    </p:dialog>
-                    <p:poll interval="1" update="nombreAsociado,apellidoAsociado" />
+                    </p:dialog> 
+                    
 
+                    
+                    
 
                     <p:dialog widgetVar="dlgAsociado" modal="false" resizable="false" header="Solicitud para asociado" showEffect="puff" >                        
                         <p:panelGrid id="displayAsociado" columns="2" columnClasses="label,value" >                            
@@ -99,7 +92,7 @@
                                 </p:column>
                                 <p:column>
                                     <h:outputText value="#{asociado.nombre} #{asociado.apellido}" />
-                                </p:column>                                    
+                                </p:column>                                 
                             </p:autoComplete>
 
                             <p:outputLabel value="Nombre:" />
@@ -111,7 +104,6 @@
                             <p:commandButton value="Enviar solicitud" actionListener="#{solicitarCertificadoManaged.solicitudAsociado()}" update=":form:panel"/>
                         </p:panel>
                     </p:dialog>
-
 
                     <p:dialog widgetVar="dlgConductor" modal="false" resizable="false" header="Solicitud para conductor" showEffect="puff" >                        
                         <p:panelGrid id="displayConductor" columns="2" columnClasses="label,value" >                            
