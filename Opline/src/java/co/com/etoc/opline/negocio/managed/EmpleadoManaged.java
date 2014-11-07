@@ -175,6 +175,7 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
             empleado.setCorreo(correo);
             empleado.setDireccion(direccion);
             empleado.setFoto(foto);
+            empleado.setSexo(sexo);
             empleado.setFechaNacimiento(fechaNacimiento);
             empleado.setFechaRegistro(new Date());
             clave = ((Long) System.currentTimeMillis()).toString();

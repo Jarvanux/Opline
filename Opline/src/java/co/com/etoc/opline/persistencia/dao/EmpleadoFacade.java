@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package co.com.etoc.opline.persistencia.dao;
 
 import co.com.etoc.opline.persistencia.entidades.Empleado;
@@ -21,6 +20,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class EmpleadoFacade extends AbstractFacade<Empleado> implements EmpleadoFacadeLocal {
+
     @PersistenceContext(unitName = "OplinePU")
     private EntityManager em;
 
@@ -34,7 +34,7 @@ public class EmpleadoFacade extends AbstractFacade<Empleado> implements Empleado
     }
 
     @Override
-     public List<Empleado> activos() {
+    public List<Empleado> activos() {
         Query q = null;
         try {
             q = em.createNativeQuery("select * from empleado where id_estado = 1 order by apellido", Empleado.class);
@@ -45,7 +45,7 @@ public class EmpleadoFacade extends AbstractFacade<Empleado> implements Empleado
     }
 
     @Override
-       public List<Empleado> deshabilitados() {
+    public List<Empleado> deshabilitados() {
         Query q = null;
         try {
             q = em.createNativeQuery("select * from empleado where id_estado = 2 order by apellido", Empleado.class);
@@ -53,24 +53,19 @@ public class EmpleadoFacade extends AbstractFacade<Empleado> implements Empleado
             System.out.println("Error: " + e.getMessage());
         }
         return q.getResultList();
-    }
+    }  
 
     @Override
-    public void deshabilitar(Empleado empleado, Integer idRol, String tabla, Date fecha, String justificacion) {    
-        Query q2 = null;
-        try{               
-            
-        }catch(Exception e){           
-        
+    public Empleado iniciarSesion(String cedula, String clave) throws SQLException {
+        Query q = null;
+        try {
+            q = em.createNativeQuery("Select * from empleado where cedula = ? and clave = ?", Empleado.class);
+            q.setParameter(1, cedula);
+            q.setParameter(2, clave);
+            return (Empleado) q.getSingleResult();
+        } catch (Exception e) {
+            return null;
         }
-    }
-
-    @Override 
-     public Empleado iniciarSesion(String cedula, String clave) throws SQLException {
-        Query q = em.createNamedQuery("Empleado.login",Empleado.class);
-        q.setParameter("cedula", cedula);
-        q.setParameter("clave", clave);
-        return (Empleado) q.getSingleResult();
     }
 
     @Override
@@ -80,11 +75,11 @@ public class EmpleadoFacade extends AbstractFacade<Empleado> implements Empleado
             q = em.createNativeQuery("select * from empleado where id_estado = 1 and cedula = ? and correo = ? and celular= ?", Empleado.class);
             q.setParameter(1, cedula);
             q.setParameter(2, correo);
-            q.setParameter(3, celular);            
-            return (Empleado)q.getSingleResult();
+            q.setParameter(3, celular);
+            return (Empleado) q.getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
-        }        
+        }
         return null;
     }
 
@@ -99,7 +94,7 @@ public class EmpleadoFacade extends AbstractFacade<Empleado> implements Empleado
             return false;
         }
     }
-    
+
     @Override
     public boolean comprobarDocumentoRepetido(String cedula) {
         Query q = null;
@@ -111,12 +106,12 @@ public class EmpleadoFacade extends AbstractFacade<Empleado> implements Empleado
         } catch (Exception e) {
             resultado = -1;
             e.printStackTrace();
-        }                
-        if(resultado > 0){
+        }
+        if (resultado > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-     
+
 }

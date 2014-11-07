@@ -50,61 +50,6 @@
                 </div>            
             </p:dialog>   
             <!--FIN DIALOGOS DE EDICIÓN DE IMAGEN-->
-
-            <p:dialog widgetVar="dlgEditarInformacion" header="Editar información de perfil" resizable="false" showEffect="clip" hideEffect="explode" >
-                <div style="float: left; border: 1px solid #A6C9E2; padding: 2px; text-align: center;">
-                    <p:graphicImage id="fotoEditarEmpleado" value="#{perfilManaged.datosEmpleado.foto}" width="150" height="150" style="display: block;"/>                                            
-                    <p:commandLink value="Editar" onclick="PF('dlgEditarImagen').show()"/>
-                </div>
-                <p:panelGrid id="displayEditarInformacion" columnClasses="label,value" columns="3" >
-                    <p:outputLabel value="Nombres:" for="nombres" />
-                    <p:inputText value="#{perfilManaged.datosEmpleado.nombre}" id="nombres"/>
-                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString1}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
-                    <p:outputLabel value="Apellidos:" for="apellidos" />
-                    <p:inputText value="#{perfilManaged.datosEmpleado.apellido}" id="apellidos" />
-                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString2}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
-                    <p:outputLabel value="Sexo:" for="sexo"/>
-                    <p:selectOneMenu value="#{perfilManaged.datosEmpleado.sexo}" id="sexo" style="width:100%; text-align: left;" >
-                        <f:selectItem  itemLabel="Seleccione" itemValue="-1"/>
-                        <f:selectItems var="sexosEditar" itemLabel="#{sexosEditar.descripcion}" itemValue="#{sexosEditar.idSexo}" 
-                                       value="#{sexoManaged.listaSexos}" />
-                    </p:selectOneMenu>
-                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenInteger2}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
-                    <p:outputLabel value="Cédula:" for="cedula" />
-                    <p:inputText value="#{perfilManaged.datosEmpleado.cedula}" id="cedula" />
-                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString3}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
-                    <p:outputLabel value="Expedida:" for="expedida" />
-                    <p:inputText value="#{perfilManaged.datosEmpleado.expedida}" id="expedida"/>
-                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString4}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};"  />
-                    <p:outputLabel value="Correo:" for="correo" />
-                    <p:inputText value="#{perfilManaged.datosEmpleado.correo}" id="correo"/>
-                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString7}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};"  />
-                    <p:outputLabel value="Celular:" for="celular" />                    
-                    <p:inputMask value="#{perfilManaged.datosEmpleado.celular}" mask="(999)-999-9999" id="celular" />
-                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString5}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};"  />
-                    <p:outputLabel value="Teléfono:" for="telefono" />
-                    <p:inputMask value="#{perfilManaged.datosEmpleado.telefono}" mask="999-9999? x99999" id="telefono" />
-                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString6}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};"  />
-                    <p:outputLabel value="Fecha nacimiento:" for="fechaNac"/>
-                    <p:calendar value="#{perfilManaged.datosEmpleado.fechaNacimiento}" id="fechaNac" navigator="true" locale="es" yearRange="c-70:c+0"/>
-                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString6}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};"  />
-                    <p:outputLabel value="Clave:" />
-                    <p:commandButton value="Editar" onclick="PF('dlgEditarClave').show(), PF('dlgEditarInformacion').hide()" />
-                </p:panelGrid>
-                <h:panelGroup style="border: 0px; width: 100%;" >
-                    <p:commandButton type="button" value="Guardar cambios" actionListener="#{perfilManaged.validarEditar()}"  style="float: right; margin-top: 10px;" update=":form" onclick="PF('dlgEditarInformacion').hide()"/>
-                    <p:commandButton type="button" value="Cancelar" onclick="PF('dlgEditarInformacion').hide()" style="float: right; margin-top: 10px;"/>
-                </h:panelGroup>
-            </p:dialog>
-            <script type="text/javascript">
-                if (#{perfilManaged.completoEditar}) {
-                    // showDialog();
-                    dlgEditarInformacion.hide();
-                } else {
-                    dlgEditarInformacion.show();
-                }
-            </script>                              
-
             <p:dialog widgetVar="dlgEditarClave" header="Cambiar clave" resizable="false" showEffect="clip" hideEffect="explode">                
                 <p:panelGrid columns="2" columnClasses="label,value">
                     <p:outputLabel value="Clave anterior:" />
@@ -156,6 +101,59 @@
                 </p:panelGrid>
             </p:panel>
 
+            <p:dialog widgetVar="dlgEditarInformacion" header="Editar información de perfil" resizable="false" showEffect="clip" hideEffect="explode" >
+                <div style="float: left; border: 1px solid #A6C9E2; padding: 2px; text-align: center;">
+                    <p:graphicImage id="fotoEditarEmpleado" value="#{perfilManaged.datosEmpleado.foto}" width="150" height="150" style="display: block;"/>                                            
+                    <p:commandLink value="Editar" onclick="PF('dlgEditarImagen').show()"/>
+                </div>
+                <p:panelGrid id="displayEditarInformacion" columnClasses="label,value" columns="3" >
+                    <p:outputLabel value="Nombres:" for="nombres" />
+                    <p:inputText value="#{perfilManaged.datosEmpleado.nombre}" id="nombres"/>
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString1}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
+                    <p:outputLabel value="Apellidos:" for="apellidos" />
+                    <p:inputText value="#{perfilManaged.datosEmpleado.apellido}" id="apellidos" />
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString2}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
+                    <p:outputLabel value="Sexo:" for="sexo"/>
+                    <p:selectOneMenu value="#{perfilManaged.datosEmpleado.sexo}" id="sexo" style="width:100%; text-align: left;" >
+                        <f:selectItem  itemLabel="Seleccione" itemValue="-1"/>
+                        <f:selectItems var="sexosEditar" itemLabel="#{sexosEditar.descripcion}" itemValue="#{sexosEditar.idSexo}" 
+                                       value="#{sexoManaged.listaSexos}" />
+                    </p:selectOneMenu>
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenInteger2}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
+                    <p:outputLabel value="Cédula:" for="cedula" />
+                    <p:inputText value="#{perfilManaged.datosEmpleado.cedula}" id="cedula" />
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString3}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};" />
+                    <p:outputLabel value="Expedida:" for="expedida" />
+                    <p:inputText value="#{perfilManaged.datosEmpleado.expedida}" id="expedida"/>
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString4}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};"  />
+                    <p:outputLabel value="Correo:" for="correo" />
+                    <p:inputText value="#{perfilManaged.datosEmpleado.correo}" id="correo"/>
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString7}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};"  />
+                    <p:outputLabel value="Celular:" for="celular" />                    
+                    <p:inputMask value="#{perfilManaged.datosEmpleado.celular}" mask="(999)-999-9999" id="celular" />
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString5}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};"  />
+                    <p:outputLabel value="Teléfono:" for="telefono" />
+                    <p:inputMask value="#{perfilManaged.datosEmpleado.telefono}" mask="999-9999? x99999" id="telefono" />
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString6}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};"  />
+                    <p:outputLabel value="Fecha nacimiento:" for="fechaNac"/>
+                    <p:calendar value="#{perfilManaged.datosEmpleado.fechaNacimiento}" id="fechaNac" navigator="true" locale="es" yearRange="c-70:c+0"/>
+                    <p:graphicImage value="../imagenes/#{validarFormularios.imagenString6}" style="width: #{validarFormularios.sizeX}px; height: #{validarFormularios.sizeY}px; display: #{validarFormularios.sizeXFinal};"  />
+                    <p:outputLabel value="Clave:" />
+                    <p:commandButton value="Editar" onclick="PF('dlgEditarClave').show(), PF('dlgEditarInformacion').hide()" />
+                </p:panelGrid>
+                <h:panelGroup style="border: 0px; width: 100%;" >
+                    <p:commandButton type="button" value="Guardar cambios" actionListener="#{perfilManaged.validarEditar()}"  style="float: right; margin-top: 10px;" update=":form" onclick="PF('dlgEditarInformacion').hide()"/>
+                    <p:commandButton type="button" value="Cancelar" onclick="PF('dlgEditarInformacion').hide()" style="float: right; margin-top: 10px;"/>
+                </h:panelGroup>
+            </p:dialog>
+            <script type="text/javascript">
+                if (#{perfilManaged.completoEditar}) {
+                    // showDialog();
+                    dlgEditarInformacion.show();
+                } else {
+                    dlgEditarInformacion.show();
+                }
+            </script>                              
 
         </h:form>
     </h:body>

@@ -36,9 +36,7 @@ public interface EmpleadoFacadeLocal {
     
     List<Empleado> activos();
     
-    List<Empleado> deshabilitados();
- 
-    void deshabilitar(Empleado empleado, Integer idRol, String tabla, Date fecha, String justificacion);
+    List<Empleado> deshabilitados(); 
     
     public Empleado iniciarSesion(String cedula, String clave) throws SQLException;
     
