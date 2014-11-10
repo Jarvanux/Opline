@@ -12,6 +12,7 @@ import co.com.etoc.opline.persistencia.entidades.Empleado;
 import co.com.etoc.opline.persistencia.entidades.Pago;
 import co.com.etoc.opline.persistencia.entidades.PagoConvenio;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -73,6 +74,7 @@ public class CalificarCertificadoManaged extends ValidaSesion implements Seriali
         try {            
             this.idCertificado = certi;
             this.idCertificado.setRespuesta("aprobado");
+            this.idCertificado.setFechaRespuesta(new Date());
             this.certificadoFL.edit(idCertificado);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"","Respuesta enviada!."));
         } catch (Exception e) {
@@ -84,6 +86,7 @@ public class CalificarCertificadoManaged extends ValidaSesion implements Seriali
         try {            
             this.idCertificado = certi;
             this.idCertificado.setRespuesta("rechazado");
+            this.idCertificado.setFechaRespuesta(new Date());
             this.certificadoFL.edit(idCertificado);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"","Respuesta enviada!."));
         } catch (Exception e) {
