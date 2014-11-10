@@ -57,22 +57,33 @@ DROP TABLE IF EXISTS `certificado`;
 CREATE TABLE IF NOT EXISTS `certificado` (
   `id_certificado` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_empleado` int(10) unsigned NOT NULL,
-  `tabla_referencia` varchar(1) COLLATE utf16_spanish_ci DEFAULT NULL,
-  `documento_solicitante` varchar(20) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `tabla_referencia` varchar(1) CHARACTER SET utf8 DEFAULT NULL,
+  `documento_solicitante` varchar(20) CHARACTER SET utf8 DEFAULT NULL,
   `fecha_solicitud` datetime DEFAULT NULL,
   `fecha_respuesta` datetime DEFAULT NULL,
-  `respuesta` varchar(10) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `respuesta` varchar(10) CHARACTER SET utf8 DEFAULT NULL,
   `fecha_generado` datetime DEFAULT NULL,
+  `id_pago` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_certificado`),
   KEY `Certificados_FKIndex1` (`id_empleado`),
   CONSTRAINT `certificado_ibfk_1` FOREIGN KEY (`id_empleado`) REFERENCES `empleado` (`id_empleado`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
--- Volcando datos para la tabla opline.certificado: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla opline.certificado: ~11 rows (aproximadamente)
 DELETE FROM `certificado`;
 /*!40000 ALTER TABLE `certificado` DISABLE KEYS */;
-INSERT INTO `certificado` (`id_certificado`, `id_empleado`, `tabla_referencia`, `documento_solicitante`, `fecha_solicitud`, `fecha_respuesta`, `respuesta`, `fecha_generado`) VALUES
-	(1, 2, 'A', '1945632784', '2014-10-21 00:02:47', '2014-10-21 00:06:17', 'aprobado', NULL);
+INSERT INTO `certificado` (`id_certificado`, `id_empleado`, `tabla_referencia`, `documento_solicitante`, `fecha_solicitud`, `fecha_respuesta`, `respuesta`, `fecha_generado`, `id_pago`) VALUES
+	(1, 2, 'A', '1945632784', '2014-10-21 00:02:47', '2014-10-21 00:06:17', 'aprobado', NULL, 1236),
+	(2, 2, 'A', '1945632784', '2014-11-07 02:54:56', '2014-11-09 13:17:17', 'aprobado', NULL, NULL),
+	(3, 2, 'A', '1657032887', '2014-11-07 04:08:40', NULL, 'rechazado', NULL, NULL),
+	(4, 2, 'A', '1203984563', '2014-11-07 04:10:51', '2014-11-09 21:59:20', 'aprobado', NULL, NULL),
+	(5, 2, 'A', '1945632784', '2014-11-07 04:18:37', '2014-11-09 21:59:38', 'rechazado', NULL, NULL),
+	(6, 2, 'A', '1945632784', '2014-11-07 04:21:34', NULL, 'pendiente', NULL, NULL),
+	(7, 2, 'A', '1945632784', '2014-11-08 17:39:20', NULL, 'pendiente', NULL, NULL),
+	(8, 2, 'A', '1945632784', '2014-11-09 02:20:17', NULL, 'pendiente', NULL, NULL),
+	(9, 2, 'A', '1945632784', '2014-11-09 02:20:40', NULL, 'pendiente', NULL, NULL),
+	(10, 2, 'A', '1578630142', '2014-11-09 02:20:49', NULL, 'pendiente', NULL, NULL),
+	(11, 2, 'A', '1578630142', '2014-11-09 02:21:42', NULL, 'pendiente', NULL, NULL);
 /*!40000 ALTER TABLE `certificado` ENABLE KEYS */;
 
 
@@ -290,7 +301,7 @@ CREATE TABLE IF NOT EXISTS `empleado` (
   `id_rol` int(10) unsigned NOT NULL,
   `nombre` varchar(25) COLLATE utf16_spanish_ci NOT NULL,
   `apellido` varchar(25) COLLATE utf16_spanish_ci NOT NULL,
-  `cedula` varchar(50) COLLATE utf16_spanish_ci NOT NULL,
+  `cedula` varchar(50) COLLATE utf16_spanish_ci DEFAULT NULL,
   `sexo` int(11) NOT NULL,
   `expedida` varchar(25) COLLATE utf16_spanish_ci NOT NULL,
   `celular` varchar(30) COLLATE utf16_spanish_ci DEFAULT NULL,
@@ -306,15 +317,15 @@ CREATE TABLE IF NOT EXISTS `empleado` (
   KEY `id_estado` (`id_estado`),
   CONSTRAINT `empleado_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `empleado_ibfk_2` FOREIGN KEY (`id_estado`) REFERENCES `estado` (`id_estado`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
--- Volcando datos para la tabla opline.empleado: ~55 rows (aproximadamente)
+-- Volcando datos para la tabla opline.empleado: ~63 rows (aproximadamente)
 DELETE FROM `empleado`;
 /*!40000 ALTER TABLE `empleado` DISABLE KEYS */;
 INSERT INTO `empleado` (`id_empleado`, `id_estado`, `id_rol`, `nombre`, `apellido`, `cedula`, `sexo`, `expedida`, `celular`, `telefono`, `direccion`, `clave`, `correo`, `foto`, `fecha_nacimiento`, `fecha_registro`) VALUES
 	(1, 1, 1, 'Fernando', 'Suarez', '1248630457', 0, 'Bogotá', '(324)-144-4111', '620-1541', 'Carrera 14 no 68 - 15', '1\r\n', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/1413918139496iconoSetup.ico', '2014-11-04', '2014-11-05'),
 	(2, 1, 2, 'Juan', 'Segura', '1754863201', 0, 'Bogotá', '3004105472', '5786245', 'Calle 28 no 14c 20', '456', 'jsegura@etoc.com', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
-	(5, 1, 2, 'Bruno', 'Lopez', '1234449', 1, 'Bogotá', '(300) 257-4120', '652-7460', 'Carrera 20 no 15c - 40', '25f9e794323b453885f5181f1b624d0b', 'bulop@etoc.com', 'imagenesRegistros/fotosEmpleados/1414992297997downloaded_optimus.jpg', NULL, '2014-11-05'),
+	(5, 1, 2, 'Bruno', 'Lopez', '4422', 1, 'Bogotá', '(300) 257-4120', '652-7460', 'Carrera 20 no 15c - 40', '25f9e794323b453885f5181f1b624d0b', 'bulop@etoc.com', 'imagenesRegistros/fotosEmpleados/1415341593996ValidarDocumento.png', NULL, '2014-11-05'),
 	(6, 2, 4, 'Maria', 'Cordoba', '4294967295', 0, 'Bogotá', '3135842010', '2304578', 'Calle 20 no 45 - 85', '101112', 'macosta@etoc.com', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(7, 1, 4, 'Patricia', 'Santana', '4852103974', 0, 'Bogotá', '3132046897', '6521028', 'Carrera 30 no 15 - 15', '131415', 'pasanta@etoc.com', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(8, 2, 5, 'Cesar', 'Marquez', '1457863205', 0, 'Bogotá', '3135478051', '5008930', 'Calle 23 no 80 - 93', '161718', 'cmarque@etoc.com', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
@@ -340,16 +351,16 @@ INSERT INTO `empleado` (`id_empleado`, `id_estado`, `id_rol`, `nombre`, `apellid
 	(38, 1, 2, 'John', 'Vanegas', '1234111', 0, 'Bogotá', '(342) 222-2112', '213-3131', '23421', '219a06295b4bd773e2486015ca578d2f', 'XD@gmail.com', 'imagenesRegistros/fotosEmpleados/1410748500191Captura.png', NULL, '2014-11-05'),
 	(39, 1, 1, 'John', 'Vargas', '123411', 0, 'Bogotá', '(322) 322-3222', '234-2322', 'Car 90', '1410796368377', 'jjvanegas67@gmail.com', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(40, 1, 2, 'XDFULL', 'SDs', 'SDs', 0, 'SDs', '(233) 333-3333', '232-2222', 'jksd', '1410796472431', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
-	(41, 1, 2, 'JJs', 'JJs', '67778889', 1, 'Bogotá', '(323) 222-2121', '322-3222', '2341', '531d352c684d681afc38be758edc7e8e', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/1415313179072ValidarDocumento.png', NULL, '2014-11-05'),
+	(41, 1, 2, 'JJs', 'JJs', '6777888931', 1, 'Bogotá', '(323) 222-2121', '322-3222', '2341', '531d352c684d681afc38be758edc7e8e', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/1415482685747cam.png', NULL, '2014-11-05'),
 	(42, 1, 1, 'Juan camilo', 'Sarmiento', '24312411', 0, 'Bogotá', '(323) 411-1111', '324-1241', 'sdfsdffs', '1410797583662', 'jcsarmiento04@misena.edu.co ', 'imagenesRegistros/fotosEmpleados/1413908954953Sin tÃ­tulo.png', NULL, '2014-11-05'),
-	(43, 1, 2, 'Andrés', 'Marulanda', '32414231', 0, 'Bogotá', '(324) 242-3222', '423-4322', 'Bogotá', '1410797633306', 'afmarulanda74@misena.edu.co ', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
+	(43, 1, 2, 'Andrés', 'Marulanda', '123444', 1, 'Bogotá', '(324) 242-3222', '423-4322', 'Bogotá', '1410797633306', 'afmarulanda74@misena.edu.co ', 'imagenesRegistros/fotosEmpleados/1415341687901ValidarDocumento.png', NULL, '2014-11-05'),
 	(44, 1, 2, 'Miguel Steven', 'Lopes', '123412', 2, 'Bogotá', '(323) 131-3111', '323-3222', 'Bogotá', '1410797743461', 'mslopez44@misena.edu.co ', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(45, 2, 2, 'sdf', 'sdf', 'sdf', 0, 'sdf', '(222) 222-2222', '222-2222', '2411', '1410797827274', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(46, 1, 4, 'Miguel', 'Vargas', '3242342', 0, 'Bogotá', '(323) 423-2222', '322-3423', 'sdfl', '1410799007505', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(47, 2, 1, 'Alejandra ', 'Suarez', '34232', 0, 'Bogotá', '(322) 423-2322', '324-2322', 'XDd', '1410799431220', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(48, 2, 1, 'xddd', 'dddd', '111111', 0, 'Bogotá', '(323) 411-1121', '234-2422', 'XDDD', '1410799708041', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(49, 2, 1, 'sdf', 'sdf', 'sdf', 0, 'sdf', '(222) 222-2222', '222-2222 x22222', 'sdl', '1410800592071', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
-	(50, 2, 2, 'José', 'Vargas', '1', 0, 'Bogotá', '(333) 333-3333', '333-3333 x33333', 'yyyyyy', 'c4ca4238a0b923820dcc509a6f75849b', 'jarvanux@gmail.com', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
+	(50, 2, 2, 'JosÃ©', 'Vargas', '1', 2, 'BogotÃ¡', '(333)-333-3333', '333-3333 x33333', 'yyyyyy', 'c4ca4238a0b923820dcc509a6f75849b', 'jarvanux@gmail.com', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(51, 1, 2, 'sdf', 'sdf', '2', 0, 'sdf', '(222) 222-2222', '222-2222 x22222', 'jksdfsf', '1415338554364', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(52, 1, 4, 'dfsdfsdf', 'sdfs', 'sdf', 0, 'sdfsdfsd', '(234) 234-2342', '234-2342 x34223', 'jskdlsdf', '1410812938078', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(53, 2, 3, 'Sofia', 'Andrade', '4875200145', 0, 'Bogotá', '(300) 595-6330', '845-7201', 'Calle 35 no  20c 60', '1410813587684', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/1413865924217XD.png', NULL, '2014-11-05'),
@@ -359,7 +370,11 @@ INSERT INTO `empleado` (`id_empleado`, `id_estado`, `id_rol`, `nombre`, `apellid
 	(57, 1, 2, 'Prueba', 'Prueba', '2123411', 0, 'Bogotá', '(324) 222-3444', '232-4232', 'Carrera 22', '1413922963611', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
 	(58, 2, 3, 'Orfilia', 'Dueñas', '2412411', 0, 'Bogotá', '(324) 242-2222', '234-2342', 'Calle 222', '1414291375355', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/1414291370584Captura.png', NULL, '2014-11-05'),
 	(60, 1, 1, 'Pepe', 'Prieto', '322111111', 0, 'Bogotá', '(321) 233-4444', '321-2344', 'Calle 22', '1414964186569', 'pprieto@gmail.com', 'imagenesRegistros/fotosEmpleados/1414964099759Captura.png', NULL, '2014-11-05'),
-	(61, 1, 2, 'Juan Camila', 'Sarmiento', '3214444', 0, 'Bogotá', '(321) 444-4444', '321-4444', 'yutgyyr57yttytety', '1415073859447', ',j6ujn hulukjuthyrm@', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05');
+	(61, 1, 2, 'Juan Camila', 'Sarmiento', '3214444', 0, 'Bogotá', '(321) 444-4444', '321-4444', 'yutgyyr57yttytety', '1415073859447', ',j6ujn hulukjuthyrm@', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', NULL, '2014-11-05'),
+	(62, 1, 1, 'Juan', 'Valdez', '13455', 1, 'Bogotá', '(234) 141-2412', '314-1241', 'Calle 10', '29d00682d658dcaae1ab172fb06ca04d', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', '2014-11-07', '2014-11-07'),
+	(63, 1, 3, 'Ana', 'Vargas', '1244125', 2, 'Bogotá', '(314) 111-1111', '341-2411', 'xd', 'c78b9b1aafea3a9d08e04ca9910178f0', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', '2014-11-07', '2014-11-07'),
+	(64, 1, 4, 'Juana', 'Peres', '1234567', 2, 'Bogotá', '(323) 444-4444', '234-4444', 'calle 23', 'c81e728d9d4c2f636f067f89cc14862c', 'juana@gmail.com', 'imagenesRegistros/fotosEmpleados/perfilPredeterminado.png', '1956-11-15', '2014-11-09'),
+	(65, 1, 1, 'Juan', 'Vargas', '321', 1, 'Bogotá', '(314)-144-1111', '234-1111', 'Calle 23', 'eccbc87e4b5ce2fe28308fd9f2a7baf3', 'jjvanegas67@misena.edu.co', 'imagenesRegistros/fotosEmpleados/1415581802319ValidarDocumento.png', '1959-11-19', '2014-11-09');
 /*!40000 ALTER TABLE `empleado` ENABLE KEYS */;
 
 
@@ -518,7 +533,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
--- Volcando datos para la tabla opline.menu: ~32 rows (aproximadamente)
+-- Volcando datos para la tabla opline.menu: ~31 rows (aproximadamente)
 DELETE FROM `menu`;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
 INSERT INTO `menu` (`id_menu`, `id_rol`, `nombre`) VALUES
@@ -530,7 +545,6 @@ INSERT INTO `menu` (`id_menu`, `id_rol`, `nombre`) VALUES
 	(6, 4, 'Zonas'),
 	(7, 4, 'Reuniones'),
 	(8, 5, 'Zonas'),
-	(9, 4, 'Certificados'),
 	(11, 4, 'Clientes'),
 	(12, 1, 'Informes'),
 	(13, 1, 'Empleados'),
@@ -585,7 +599,7 @@ CREATE TABLE IF NOT EXISTS `opcion` (
   PRIMARY KEY (`id_opcion`),
   KEY `opcion_FKIndex1` (`id_menu`),
   CONSTRAINT `opcion_ibfk_1` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 -- Volcando datos para la tabla opline.opcion: ~38 rows (aproximadamente)
 DELETE FROM `opcion`;
@@ -601,8 +615,7 @@ INSERT INTO `opcion` (`id_opcion`, `id_menu`, `nombre`, `url`) VALUES
 	(12, 8, 'Consultar', 'zonaConsultar.xhtml'),
 	(13, 33, 'Administrar Clientes', 'cliente.xhtml'),
 	(14, 8, 'Gestión de viajes', 'viajes.xhtml'),
-	(16, 9, 'Petición', 'peticionCertificado.xhtml'),
-	(17, 5, 'Consultar', 'consultarCertificado.xhtml'),
+	(17, 5, 'Consultar', 'consultarCertificados.xhtml'),
 	(19, 11, 'Gestión Clientes', 'cliente.xhtml'),
 	(20, 12, 'Generar informes', 'generarInformes.xhtml'),
 	(21, 13, 'Consultar', 'consultarEmpleados.xhtml'),
@@ -612,7 +625,6 @@ INSERT INTO `opcion` (`id_opcion`, `id_menu`, `nombre`, `url`) VALUES
 	(25, 17, 'Consultar Asociados', 'consultarAsociados.xhtml'),
 	(26, 18, 'Consultar Pagos', 'pagoConsultar.xhtml'),
 	(27, 18, 'Consultar Pagos Convenio', 'pagoConvenioConsultar.xhtml'),
-	(28, 19, 'Gestión Certificados', 'gestionCertificados.xhtml'),
 	(31, 21, 'Generar informes', 'generarInformes.xhtml'),
 	(32, 22, 'Gestión Zonas', 'zona.xhtml'),
 	(33, 23, 'Gestión clientes', 'cliente.xhtml'),
@@ -628,7 +640,9 @@ INSERT INTO `opcion` (`id_opcion`, `id_menu`, `nombre`, `url`) VALUES
 	(44, 31, 'Convenio', 'pagoConvenio.xhtml'),
 	(45, 32, 'Consultar Zona', 'zonaConsultar.xhtml'),
 	(46, 34, 'Consultar', 'reunionConsultar.xhtml'),
-	(47, 36, 'Editar', 'informacionEmpresa.xhtml');
+	(47, 36, 'Editar', 'informacionEmpresa.xhtml'),
+	(49, 5, 'Petición', 'peticionCertificado.xhtml'),
+	(50, 19, 'Certificados', 'CalificarCertificados.xhtml');
 /*!40000 ALTER TABLE `opcion` ENABLE KEYS */;
 
 
@@ -665,6 +679,7 @@ CREATE TABLE IF NOT EXISTS `pago` (
   `fecha_fin` datetime DEFAULT NULL,
   `valor_pago` double NOT NULL,
   `observacion` varchar(200) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `id_empleado` int(11) DEFAULT NULL,
   PRIMARY KEY (`numero_recibo`),
   KEY `Pago_FKIndex1` (`id_tipo_pago`),
   KEY `pago_FKIndex2` (`id_asociado`),
@@ -672,12 +687,16 @@ CREATE TABLE IF NOT EXISTS `pago` (
   CONSTRAINT `pago_ibfk_2` FOREIGN KEY (`id_asociado`) REFERENCES `asociado` (`id_asociado`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
--- Volcando datos para la tabla opline.pago: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla opline.pago: ~6 rows (aproximadamente)
 DELETE FROM `pago`;
 /*!40000 ALTER TABLE `pago` DISABLE KEYS */;
-INSERT INTO `pago` (`numero_recibo`, `id_asociado`, `id_tipo_pago`, `fecha_pago`, `fecha_inicio`, `fecha_fin`, `valor_pago`, `observacion`) VALUES
-	(123, 4, 4, '2014-11-02 23:05:16', '2014-11-02 23:05:18', '2014-11-02 23:05:19', 21, '11'),
-	(2144, 2, 2, '2014-11-05 01:30:54', '2014-11-05 00:00:00', NULL, 233, '111');
+INSERT INTO `pago` (`numero_recibo`, `id_asociado`, `id_tipo_pago`, `fecha_pago`, `fecha_inicio`, `fecha_fin`, `valor_pago`, `observacion`, `id_empleado`) VALUES
+	(123, 4, 4, '2014-11-02 23:05:16', '2014-11-02 23:05:18', '2014-11-02 23:05:19', 21, '11', NULL),
+	(1234, 2, 3, '2014-11-09 13:03:47', NULL, NULL, 2344, NULL, 64),
+	(1236, 2, 3, '2014-11-09 13:21:28', NULL, NULL, 23444, NULL, 64),
+	(2144, 2, 2, '2014-11-05 01:30:54', '2014-11-05 00:00:00', NULL, 233, '111', NULL),
+	(12444, 2, 3, '2014-11-09 12:47:47', NULL, NULL, 0, NULL, 64),
+	(1234415, 2, 3, '2014-11-09 13:14:32', NULL, NULL, 2134, NULL, 64);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 
 
@@ -692,6 +711,7 @@ CREATE TABLE IF NOT EXISTS `pago_convenio` (
   `fecha_fin` datetime DEFAULT NULL,
   `valor_consignacion` double NOT NULL,
   `observacion` varchar(300) COLLATE utf16_spanish_ci DEFAULT NULL,
+  `id_empleado` int(11) DEFAULT NULL,
   PRIMARY KEY (`numero_consig`),
   KEY `PagoConvenio_FKIndex1` (`id_vehiculo`,`id_convenio`),
   KEY `FK_convenio` (`id_convenio`),
@@ -702,31 +722,31 @@ CREATE TABLE IF NOT EXISTS `pago_convenio` (
 -- Volcando datos para la tabla opline.pago_convenio: ~24 rows (aproximadamente)
 DELETE FROM `pago_convenio`;
 /*!40000 ALTER TABLE `pago_convenio` DISABLE KEYS */;
-INSERT INTO `pago_convenio` (`numero_consig`, `id_convenio`, `id_vehiculo`, `fecha_consignacion`, `fecha_inicio`, `fecha_fin`, `valor_consignacion`, `observacion`) VALUES
-	(123, 2, 2, '2014-09-01 16:11:30', '2014-09-01 16:11:30', '2014-09-01 16:11:30', 134, NULL),
-	(136, 2, 12, '2014-01-15 00:00:00', NULL, NULL, 250000, NULL),
-	(154, 1, 2, '2014-03-20 00:00:00', NULL, NULL, 250000, NULL),
-	(160, 1, 3, '2014-02-20 00:00:00', NULL, NULL, 250000, NULL),
-	(190, 3, 7, '2014-04-28 00:00:00', NULL, NULL, 180000, NULL),
-	(195, 2, 15, '2014-05-05 00:00:00', NULL, NULL, 250000, NULL),
-	(201, 1, 2, '2014-07-21 00:00:00', NULL, NULL, 300000, NULL),
-	(202, 1, 3, '2014-07-24 00:00:00', NULL, NULL, 300000, NULL),
-	(203, 3, 7, '2014-07-27 00:00:00', NULL, NULL, 220000, NULL),
-	(204, 2, 12, '2014-07-27 00:00:00', NULL, NULL, 300000, NULL),
-	(205, 2, 15, '2014-07-27 00:00:00', NULL, NULL, 300000, NULL),
-	(552, 2, 5, '2014-08-31 22:29:51', '2014-08-31 22:29:51', '2014-08-31 22:29:51', 12341, NULL),
-	(1231, 2, 2, '2014-11-05 02:03:05', '2014-11-05 02:03:05', '2014-11-05 02:03:05', 0, ''),
-	(2342, 2, 3, '2014-09-02 07:51:30', '2014-09-02 07:51:30', '2014-09-02 07:51:30', 0, NULL),
-	(21345, 2, 2, '2014-08-31 15:06:46', NULL, NULL, 7889999, NULL),
-	(21346, 1, 2, '2014-08-31 16:26:11', '2014-08-31 16:26:11', '2014-08-31 16:26:11', 242234234, NULL),
-	(21347, 1, 2, '2014-08-31 16:29:39', '2014-08-31 16:29:39', '2014-08-31 16:29:39', 2412341, NULL),
-	(21348, 2, 5, '2014-08-31 16:31:04', '2014-08-31 16:31:04', '2014-08-31 16:31:04', 21341, NULL),
-	(21349, 2, 5, '2014-08-31 16:44:31', '2014-08-31 16:44:31', '2014-08-31 00:00:00', 1234, ''),
-	(21350, 2, 2, '2014-08-31 22:23:34', '2014-08-31 22:23:34', '2014-08-31 22:23:34', 12431, NULL),
-	(21351, 2, 3, '2014-08-31 22:24:28', '2014-08-31 22:24:28', '2014-08-31 00:00:00', 1241, 'SDFSDF'),
-	(333333, 3, 7, '2014-09-05 15:57:10', '2014-09-05 15:57:10', '2014-09-05 15:57:10', 33333, NULL),
-	(4444444, 1, 2, '2014-09-05 16:18:11', '2014-09-05 16:18:11', '2014-09-05 16:18:11', 677777, NULL),
-	(5555555, 2, 2, '2014-10-01 18:30:02', '2014-10-01 18:30:02', '2014-10-07 00:00:00', 23422, 'xd');
+INSERT INTO `pago_convenio` (`numero_consig`, `id_convenio`, `id_vehiculo`, `fecha_consignacion`, `fecha_inicio`, `fecha_fin`, `valor_consignacion`, `observacion`, `id_empleado`) VALUES
+	(123, 2, 2, '2014-09-01 16:11:30', '2014-09-01 16:11:30', '2014-09-01 16:11:30', 134, NULL, NULL),
+	(136, 2, 12, '2014-01-15 00:00:00', NULL, NULL, 250000, NULL, NULL),
+	(154, 1, 2, '2014-03-20 00:00:00', NULL, NULL, 250000, NULL, NULL),
+	(160, 1, 3, '2014-02-20 00:00:00', NULL, NULL, 250000, NULL, NULL),
+	(190, 3, 7, '2014-04-28 00:00:00', NULL, NULL, 180000, NULL, NULL),
+	(195, 2, 15, '2014-05-05 00:00:00', NULL, NULL, 250000, NULL, NULL),
+	(201, 1, 2, '2014-07-21 00:00:00', NULL, NULL, 300000, NULL, NULL),
+	(202, 1, 3, '2014-07-24 00:00:00', NULL, NULL, 300000, NULL, NULL),
+	(203, 3, 7, '2014-07-27 00:00:00', NULL, NULL, 220000, NULL, NULL),
+	(204, 2, 12, '2014-07-27 00:00:00', NULL, NULL, 300000, NULL, NULL),
+	(205, 2, 15, '2014-07-27 00:00:00', NULL, NULL, 300000, NULL, NULL),
+	(552, 2, 5, '2014-08-31 22:29:51', '2014-08-31 22:29:51', '2014-08-31 22:29:51', 12341, NULL, NULL),
+	(1231, 2, 2, '2014-11-05 02:03:05', '2014-11-05 02:03:05', '2014-11-05 02:03:05', 0, '', NULL),
+	(2342, 2, 3, '2014-09-02 07:51:30', '2014-09-02 07:51:30', '2014-09-02 07:51:30', 0, NULL, NULL),
+	(21345, 2, 2, '2014-08-31 15:06:46', NULL, NULL, 7889999, NULL, NULL),
+	(21346, 1, 2, '2014-08-31 16:26:11', '2014-08-31 16:26:11', '2014-08-31 16:26:11', 242234234, NULL, NULL),
+	(21347, 1, 2, '2014-08-31 16:29:39', '2014-08-31 16:29:39', '2014-08-31 16:29:39', 2412341, NULL, NULL),
+	(21348, 2, 5, '2014-08-31 16:31:04', '2014-08-31 16:31:04', '2014-08-31 16:31:04', 21341, NULL, NULL),
+	(21349, 2, 5, '2014-08-31 16:44:31', '2014-08-31 16:44:31', '2014-08-31 00:00:00', 1234, '', NULL),
+	(21350, 2, 2, '2014-08-31 22:23:34', '2014-08-31 22:23:34', '2014-08-31 22:23:34', 12431, NULL, NULL),
+	(21351, 2, 3, '2014-08-31 22:24:28', '2014-08-31 22:24:28', '2014-08-31 00:00:00', 1241, 'SDFSDF', NULL),
+	(333333, 3, 7, '2014-09-05 15:57:10', '2014-09-05 15:57:10', '2014-09-05 15:57:10', 33333, NULL, NULL),
+	(4444444, 1, 2, '2014-09-05 16:18:11', '2014-09-05 16:18:11', '2014-09-05 16:18:11', 677777, NULL, NULL),
+	(5555555, 2, 2, '2014-10-01 18:30:02', '2014-10-01 18:30:02', '2014-10-07 00:00:00', 23422, 'xd', NULL);
 /*!40000 ALTER TABLE `pago_convenio` ENABLE KEYS */;
 
 
