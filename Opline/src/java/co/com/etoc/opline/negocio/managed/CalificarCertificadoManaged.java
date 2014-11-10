@@ -1,162 +1,154 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.com.etoc.opline.negocio.managed;
 
 import co.com.etoc.opline.persistencia.dao.AsociadoFacadeLocal;
 import co.com.etoc.opline.persistencia.dao.CertificadoFacadeLocal;
+import co.com.etoc.opline.persistencia.dao.EmpleadoFacadeLocal;
+import co.com.etoc.opline.persistencia.dao.PagoConvenioFacadeLocal;
 import co.com.etoc.opline.persistencia.dao.PagoFacadeLocal;
+import co.com.etoc.opline.persistencia.dao.VehiculoFacadeLocal;
 import co.com.etoc.opline.persistencia.entidades.Asociado;
 import co.com.etoc.opline.persistencia.entidades.Certificado;
+import co.com.etoc.opline.persistencia.entidades.Empleado;
 import co.com.etoc.opline.persistencia.entidades.Pago;
-import java.io.IOException;
+import co.com.etoc.opline.persistencia.entidades.PagoConvenio;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 /**
  *
- * @author andres
+ * @author jhonjaider1000
  */
 @ManagedBean
-@RequestScoped
-public class CalificarCertificadoManaged {
-
-    private List<Certificado> listaCertificado;
-
-    private List<Certificado> filtartificado;
-    private List<Pago> listaPagos;
-
-    private String respuesta;
-    private Certificado dato;
-    private Integer listarPor;
-    private Asociado asociadoSelect;
-
-    @EJB
-    private CertificadoFacadeLocal localCertificado;
-
-    @EJB
-    private PagoFacadeLocal localPago;
-
-    @EJB
-    private AsociadoFacadeLocal localAsociado;
+@ViewScoped
+public class CalificarCertificadoManaged extends ValidaSesion implements Serializable{
 
     public CalificarCertificadoManaged() {
     }
-
+    
+    //Listas...
+    private List<Certificado> listaSolicitudes;
+    private List<Certificado> filtroSolicitudes;
+    
+    //Atributos...
+    private Certificado idCertificado;
+    private Asociado idAsociado;
+    private Empleado idEmpleado;
+    private Integer listarPor;
+    private Integer listarPor2;
+    
+    //Listas para consultar pagos.
+    private List<Pago> listaPagos;
+    private List<PagoConvenio> listaPagosConvenio;    
+    
+    @EJB 
+    private CertificadoFacadeLocal certificadoFL;
+    @EJB
+    private AsociadoFacadeLocal asociadoFL;
+    @EJB
+    private EmpleadoFacadeLocal empleadoFL;
+    @EJB
+    private PagoFacadeLocal pagoFL;
+    @EJB
+    private PagoConvenioFacadeLocal pagoConvenioFL;
+    @EJB
+    private VehiculoFacadeLocal vehiculoFL; 
+    
     @PostConstruct
-    public void init() {
-
-        listaCertificado = localCertificado.consultarPorEstadoPendiente();
-        listaPagos = localPago.listarOrdenadamente();
+    public void init(){
+        this.listarSolicitudes("pendiente");
     }
-
-    public void listarAsociado() {
-
-        localCertificado.consultarPorEstadoPendiente();
-
+        
+    public void listarSolicitudes(String respuesta){
+        this.listaSolicitudes = certificadoFL.listarPor(respuesta);
     }
-
-    public void consultarAsocidado(String documento) {
-        try {
-            System.out.println("El documento recibido fue: "+documento);
-            this.asociadoSelect = localAsociado.consultarAsosicado(respuesta);
-            System.out.println("El asociado se llama: "+asociadoSelect.getApellido());
+    
+    public void aprobar(Certificado certi){
+        try {            
+            this.idCertificado = certi;
+            this.idCertificado.setRespuesta("aprobado");
+            this.certificadoFL.edit(idCertificado);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"","Respuesta enviada!."));
         } catch (Exception e) {
-            System.out.println("Error CalificarCertificadoManaged.consultarAsociad()");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"","No se pudo enviar la respuesta."));
         }
     }
-
-    public String aprobar(long certificado) {
-        String mensaje = null;
-        long cer = 0;
-        try {
-            cer = certificado;
-            System.out.println(certificado);
-            respuesta = "aprobado";
-            localCertificado.actualizar(cer, respuesta);
-            mensaje = "Certificado aprobado";
+    
+    public void rechazar(Certificado certi){
+        try {            
+            this.idCertificado = certi;
+            this.idCertificado.setRespuesta("rechazado");
+            this.certificadoFL.edit(idCertificado);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"","Respuesta enviada!."));
         } catch (Exception e) {
-            System.out.println("A ocurrido algun error" + e.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"","No se pudo enviar la respuesta."));
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensaje));
-
-        return "calificarCertificado.xhtml";
     }
-
-    public String rechazar(long certificado) {
-        String mensaje = null;
-        long cer = 0;
-        try {
-            cer = certificado;
-            System.out.println(certificado);
-            respuesta = "rechazado";
-            localCertificado.actualizar(cer, respuesta);
-            mensaje = "Certificado rechazado";
-
-        } catch (Exception e) {
-            System.out.println("A ocurrido algun error");
-        }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensaje));
-        return "calificarCertificado.xhtml";
+        
+    public void analizarProgreso(Certificado certificado){
+        this.idAsociado = asociadoFL.consultarAsosicado(certificado.getDocumentoSolicitante());
+        this.idEmpleado = empleadoFL.consultarEmpleadoPorID(certificado.getIdEmpleado().getIdEmpleado());        
+        this.idCertificado = certificado;
     }
-
-    public void prepararDatos(Certificado certi) throws IOException {
-        this.dato = certi;
-
-    }
-
-    public void listarPago() {
+    
+    
+    public void listarPreviamente(){
+        this.listarPor = 0;
+        this.listarPor();
+    }  
+    public void listarPor() {
         if (listarPor > 0) {
-            this.listaPagos = localPago.tipoExclusivo(listarPor);
+            this.listaPagos = pagoFL.tipoExclusivo(listarPor,this.idAsociado.getIdAsociado());
         } else {
-            this.listaPagos = localPago.listarOrdenadamente();
+            this.listaPagos = pagoFL.listarOrdenadamente(this.idAsociado.getIdAsociado());
         }
+    }        
+    
+    //Métodos set y get.
+    public List<Certificado> getListaSolicitudes() {
+        return listaSolicitudes;
     }
 
-//   
-//    public void consultarDocumento(String documento) {
-//       
-//        try {
-//           localAsociado.consultarPagos(documento);
-//           long id = localAsociado.consultarPagos(documento);
-//                    
-//            if( id > 0){
-//                listaPagos = localPago.ultimosPagos(id);
-//            }
-//        } catch (Exception e) {
-//            System.out.println("A ocurrido uun error");
-//        }
-//       
-//    }
-    public List<Certificado> getListaCertificado() {
-        return listaCertificado;
+    public void setListaSolicitudes(List<Certificado> listaSolicitudes) {
+        this.listaSolicitudes = listaSolicitudes;
     }
 
-    public void setListaCertificado(List<Certificado> listaCertificado) {
-        this.listaCertificado = listaCertificado;
+    public List<Certificado> getFiltroSolicitudes() {
+        return filtroSolicitudes;
     }
 
-    public List<Certificado> getFiltartificado() {
-        return filtartificado;
+    public void setFiltroSolicitudes(List<Certificado> filtroSolicitudes) {
+        this.filtroSolicitudes = filtroSolicitudes;
     }
 
-    public void setFiltartificado(List<Certificado> filtartificado) {
-        this.filtartificado = filtartificado;
+    public Certificado getIdCertificado() {
+        return idCertificado;
     }
 
-    public String getRespuesta() {
-        return respuesta;
+    public void setIdCertificado(Certificado idCertificado) {
+        this.idCertificado = idCertificado;
+    }        
+
+    public Asociado getIdAsociado() {
+        return idAsociado;
     }
 
-    public void setRespuesta(String respuesta) {
-        this.respuesta = respuesta;
+    public void setIdAsociado(Asociado idAsociado) {
+        this.idAsociado = idAsociado;
+    }
+
+    public Empleado getIdEmpleado() {
+        return idEmpleado;
+    }
+
+    public void setIdEmpleado(Empleado idEmpleado) {
+        this.idEmpleado = idEmpleado;
     }
 
     public List<Pago> getListaPagos() {
@@ -167,12 +159,12 @@ public class CalificarCertificadoManaged {
         this.listaPagos = listaPagos;
     }
 
-    public Certificado getDato() {
-        return dato;
+    public List<PagoConvenio> getListaPagosConvenio() {
+        return listaPagosConvenio;
     }
 
-    public void setDato(Certificado dato) {
-        this.dato = dato;
+    public void setListaPagosConvenio(List<PagoConvenio> listaPagosConvenio) {
+        this.listaPagosConvenio = listaPagosConvenio;
     }
 
     public Integer getListarPor() {
@@ -181,14 +173,5 @@ public class CalificarCertificadoManaged {
 
     public void setListarPor(Integer listarPor) {
         this.listarPor = listarPor;
-    }
-
-    public Asociado getAsociadoSelect() {
-        return asociadoSelect;
-    }
-
-    public void setAsociadoSelect(Asociado asociadoSelect) {
-        this.asociadoSelect = asociadoSelect;
-    }
-
+    }   
 }

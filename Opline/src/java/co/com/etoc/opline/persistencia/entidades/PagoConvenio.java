@@ -45,6 +45,9 @@ public class PagoConvenio implements Serializable {
     @Basic(optional = false)
     @Column(name = "numero_consig")
     private Integer numeroConsig;
+    @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Empleado idEmpleado;    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_consignacion")
@@ -53,7 +56,7 @@ public class PagoConvenio implements Serializable {
     @Column(name = "fecha_inicio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
-    @Column(name = "fecha_fin")
+    @Column(name = "fecha_fin")    
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFin;
     @Basic(optional = false)
@@ -121,6 +124,14 @@ public class PagoConvenio implements Serializable {
     public void setValorConsignacion(double valorConsignacion) {
         this.valorConsignacion = valorConsignacion;
     }
+
+    public Empleado getIdEmpleado() {
+        return idEmpleado;
+    }
+
+    public void setIdEmpleado(Empleado idEmpleado) {
+        this.idEmpleado = idEmpleado;
+    }    
 
     public Vehiculo getIdVehiculo() {
         return idVehiculo;

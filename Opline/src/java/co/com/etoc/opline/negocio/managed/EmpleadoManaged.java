@@ -616,12 +616,6 @@ public class EmpleadoManaged extends ValidaSesion implements Serializable {
     }
 
     public void validarEditar() {
-        if (localEmpleado.comprobarDocumentoRepetido(datos.getCedula())) {
-            completoEditar = false;
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "El número de documento se encuentra registrado en la Base de datos.", "El número de documento ya se encuentra registrado."));
-        } else {
-            completoEditar = true;
-        }
         if (completoEditar) {
             this.completoEditar = ValidarFormularios.validar(datos.getNombre(), datos.getApellido(), datos.getCedula(), datos.getExpedida(), datos.getCelular(), datos.getTelefono(), datos.getCorreo(), datos.getDireccion(), datos.getClave(), this.rolEdit, this.sexoEditar);
         }

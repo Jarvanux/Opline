@@ -40,4 +40,8 @@ public interface PagoConvenioFacadeLocal {
     PagoConvenio ultimoPago(Integer idVehiculo, Integer idConvenio);
 
     public boolean comprobarCodigoRepetido(Integer numeroRecibo);
+
+    public List<PagoConvenio> tipoExclusivo(Integer listarPor, Integer idVehiculo);
+
+    public List<PagoConvenio> listarOrdenadamente(Integer idVehiculo);
 }

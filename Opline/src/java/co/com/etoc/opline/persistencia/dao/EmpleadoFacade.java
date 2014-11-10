@@ -113,5 +113,18 @@ public class EmpleadoFacade extends AbstractFacade<Empleado> implements Empleado
             return false;
         }
     }
+    
+    
+    @Override    
+    public Empleado consultarEmpleadoPorID(Integer idEmpleado){
+        Query q = null;
+        try {
+            q = em.createNativeQuery("select * from empleado where id_empleado = ? limit 1",Empleado.class);
+            q.setParameter(1, idEmpleado);
+            return (Empleado)q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

@@ -126,10 +126,10 @@ public class ClienteManaged extends ValidaSesion implements Serializable {
         try {
             datos.setIdTipoCliente(new TipoCliente(tipoCliente2));
             localCliente.edit(datos);            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro editado.","Registro editado."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro actualizado.","Registro actualizado."));
             this.limpiar();           
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro no editado.","Registro no editado."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro no actualizado.","Registro no actualizado."));
             System.out.println("Error en EmpleadoManaged al eliminar " + e.getMessage());            
         }
         this.init();        
@@ -152,12 +152,6 @@ public class ClienteManaged extends ValidaSesion implements Serializable {
     }
 
     public void validarEdicion() {
-        if (localCliente.comprobarDocumentoRepetido(datos.getCedula())) {
-            completoEditar = false;
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "El número de documento ya se encuentra registrado.", "El número de documento ya se encuentra registrado."));
-        } else {
-            completoEditar = true;
-        }
         if (completoEditar) {
             this.completoEditar = ValidarFormularios.validar(tipoCliente2, datos.getNombre(), datos.getApellido(), datos.getCedula());
         }

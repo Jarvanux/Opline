@@ -9,6 +9,7 @@
         <script type="text/javascript" src="js/traducirCalendario.js" />
     </h:head>
     <h:body>
+
         <p:dialog id="dlgSubirFoto2" widgetVar="dlgSubirFoto" resizable="false" header="Subir foto" showEffect="fade" hideEffect="explode">
             <h:form id="form2" enctype="multipart/form-data">
                 <div style="width: 600px;; height: 150px;">
@@ -20,6 +21,26 @@
 
         <h:form id="form"> 
             <p:growl autoUpdate="true" showDetail="true" showSummary="false" />
+            <p:dialog widgetVar="dlgEditarClave" header="Cambiar clave" resizable="false" showEffect="clip" hideEffect="explode">                
+                <p:panelGrid columns="2" columnClasses="label,value">
+                    <p:outputLabel value="Clave anterior:" />
+                    <p:password value="#{perfilManaged.clave}" feedback="true"
+                                promptLabel="No segura" weakLabel="Regular"
+                                goodLabel="Buena" strongLabel="Segura" />
+                    <p:outputLabel value="Clave Nueva:" />
+                    <p:password value="#{perfilManaged.claveNueva}" feedback="true"
+                                promptLabel="No segura" weakLabel="Regular"
+                                goodLabel="Buena" strongLabel="Segura" />
+                    <p:outputLabel value="Confirmar clave:" />
+                    <p:password value="#{perfilManaged.claveConfirmada}" feedback="true"
+                                promptLabel="No segura" weakLabel="Regular"
+                                goodLabel="Buena" strongLabel="Segura" />
+                </p:panelGrid>
+                <p:panel style="border: 0px;">                    
+                    <p:commandButton value="Actualizar" title="Actualizar clave" actionListener="#{perfilManaged.editarClave()}" />
+                    <p:commandButton type="button" value="Cancelar" title="Cancelar" onclick="PF('dlgEditarClave').hide()" />
+                </p:panel>
+            </p:dialog>
 
             <!--DIALOGOS DE EDICIÓN DE IMAGEN-->
             <p:dialog id="dlgEditarImagen" widgetVar="dlgEditarImagen" resizable="false" header="Editar imagen de perfil" showEffect="explode">
@@ -103,28 +124,7 @@
                 } else {
                     dlgEditarInformacion.show();
                 }
-            </script>                              
-
-            <p:dialog widgetVar="dlgEditarClave" header="Cambiar clave" resizable="false" showEffect="clip" hideEffect="explode">                
-                <p:panelGrid columns="2" columnClasses="label,value">
-                    <p:outputLabel value="Clave anterior:" />
-                    <p:password value="#{perfilManaged.clave}" feedback="true"
-                                promptLabel="No segura" weakLabel="Regular"
-                                goodLabel="Buena" strongLabel="Segura" />
-                    <p:outputLabel value="Clave Nueva:" />
-                    <p:password value="#{perfilManaged.claveNueva}" feedback="true"
-                                promptLabel="No segura" weakLabel="Regular"
-                                goodLabel="Buena" strongLabel="Segura" />
-                    <p:outputLabel value="Confirmar clave:" />
-                    <p:password value="#{perfilManaged.claveConfirmada}" feedback="true"
-                                promptLabel="No segura" weakLabel="Regular"
-                                goodLabel="Buena" strongLabel="Segura" />
-                </p:panelGrid>
-                <p:panel style="border: 0px;">                    
-                    <p:commandButton value="Actualizar" title="Actualizar clave" actionListener="#{perfilManaged.editarClave()}" />
-                    <p:commandButton type="button" value="Cancelar" title="Cancelar" onclick="PF('dlgEditarClave').hide()" />
-                </p:panel>
-            </p:dialog>
+            </script>                                       
 
             <p:panel header="Configuración de perfil" style="height: 460px; text-align: left;">
                 <p:panelGrid columns="2" style="margin: 0 auto;" >                    

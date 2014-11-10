@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package co.com.etoc.opline.negocio.managed;
 
 import co.com.etoc.opline.persistencia.dao.CertificadoFacadeLocal;
@@ -12,6 +11,7 @@ import co.com.etoc.opline.persistencia.entidades.Certificado;
 import co.com.etoc.opline.persistencia.entidades.Conductor;
 import co.com.etoc.opline.persistencia.entidades.Empleado;
 import co.com.etoc.opline.persistencia.entidades.Pago;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -29,50 +29,40 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class peticionCertifiacoManaged {
+public class peticionCertifiacoManaged extends ValidaSesion implements Serializable {
 
     private String tablaReferencia;
     private String documentoSolicitante;
     private String respuesta;
-    private Empleado empleado;
     private Conductor conductor;
     private Asociado asociado;
     private Certificado dato;
-    
-    
+
     @EJB
     private CertificadoFacadeLocal localCertificado;
-    
+
     public peticionCertifiacoManaged() {
     }
-    
-    
-    
-   
-  
-    
-    
-    public String guardar(){
-    String mensaje;
-    final Calendar fechaDeHoy = Calendar.getInstance();
-    final Date date = new Date();
+
+    public String guardar() {
+        final Calendar fechaDeHoy = Calendar.getInstance();
+        Empleado em = this.empleado;        
+        final Date date = new Date();
         try {
-         
             tablaReferencia = "A";
+            //A = tabla asociado en BD.
+            //C = tabla conductor en BD.
+            //E = tabla empleado en BD.
+            //C y E no se implementaron debido a que el módulo no fue totalmente
+            //finalizado.
             respuesta = "pendiente";
-            localCertificado.peticion(tablaReferencia,asociado.getCedula(),fechaDeHoy.getTime(),respuesta);
-            
-            mensaje = "Se ha realizado correctamente la peticion del certificado";
+            localCertificado.peticion(em.getIdEmpleado(), tablaReferencia, asociado.getCedula(), fechaDeHoy.getTime(), respuesta);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Petición enviada!.", ""));
         } catch (Exception e) {
-        
-            mensaje ="Se presento un error realizando la pétición" ;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo enviar la petición", ""));
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensaje));
         return "peticionCertificado.xhtml";
     }
-    
-    
-    
 
     public String getTablaReferencia() {
         return tablaReferencia;
@@ -90,9 +80,6 @@ public class peticionCertifiacoManaged {
         this.respuesta = respuesta;
     }
 
-    
-   
-
     public String getDocumentoSolicitante() {
         return documentoSolicitante;
     }
@@ -108,8 +95,6 @@ public class peticionCertifiacoManaged {
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
-
-
 
     public Conductor getConductor() {
         return conductor;
@@ -127,9 +112,4 @@ public class peticionCertifiacoManaged {
         this.asociado = asociado;
     }
 
-  
-   
-    
-    
-    
 }

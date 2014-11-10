@@ -7,6 +7,7 @@ package co.com.etoc.opline.negocio.managed;
 
 import co.com.etoc.opline.persistencia.dao.EmpleadoFacadeLocal;
 import co.com.etoc.opline.persistencia.entidades.Empleado;
+import co.com.etoc.opline.utilerias.UtilOne;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -121,10 +122,10 @@ public class PerfilManaged extends ValidaSesion implements Serializable {
      */
     public void editarClave() {
         try {
-            if (this.datosEmpleado.getClave().equals(this.clave)) {
+            if (this.datosEmpleado.getClave().equals(UtilOne.md5(this.clave))) {
                 if (this.claveNueva.equals(this.claveConfirmada)) {
                     if (this.claveNueva.length() > 0) {
-                        this.datosEmpleado.setClave(this.claveNueva); //Se fija la clave en el objeto que vamos a enviar.
+                        this.datosEmpleado.setClave(UtilOne.md5(this.claveNueva)); //Se fija la clave en el objeto que vamos a enviar.
                         this.empleadoFL.edit(this.datosEmpleado); //Se edita el registro.
                         this.init();
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Clave actualizada correctamente!.", "Clave actualizada correctamente!."));

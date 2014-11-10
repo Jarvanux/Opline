@@ -63,6 +63,9 @@ public class Pago implements Serializable {
     @Size(max = 200)
     @Column(name = "observacion")
     private String observacion;
+    @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Empleado idEmpleado;    
     @JoinColumn(name = "id_asociado", referencedColumnName = "id_asociado")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Asociado idAsociado;
@@ -131,6 +134,14 @@ public class Pago implements Serializable {
         this.observacion = observacion;
     }
 
+    public Empleado getIdEmpleado() {
+        return idEmpleado;
+    }
+
+    public void setIdEmpleado(Empleado idEmpleado) {
+        this.idEmpleado = idEmpleado;
+    }
+    
     public Asociado getIdAsociado() {
         return idAsociado;
     }

@@ -69,9 +69,9 @@ public class TipoClienteManaged extends ValidaSesion implements Serializable{
         try {
             TipoCliente tipoCliente = ((TipoCliente) event.getObject());
             localTipoCliente.edit(tipoCliente);
-            mensaje = "Registro editado correctamente.";
+            mensaje = "Registro actualizado correctamente.";
         } catch (Exception e) {
-            mensaje = "Error al editar registro.";
+            mensaje = "Error al actualizar registro.";
         }
         FacesMessage msg = new FacesMessage("TipoCliente ", mensaje);
         FacesContext.getCurrentInstance().addMessage(null, msg);

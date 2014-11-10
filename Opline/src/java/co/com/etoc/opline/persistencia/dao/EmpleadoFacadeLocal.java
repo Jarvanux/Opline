@@ -45,4 +45,6 @@ public interface EmpleadoFacadeLocal {
     public boolean editarClave(Empleado empleado);    
 
     public boolean comprobarDocumentoRepetido(String cedula);
+
+    public Empleado consultarEmpleadoPorID(Integer idEmpleado);
 }

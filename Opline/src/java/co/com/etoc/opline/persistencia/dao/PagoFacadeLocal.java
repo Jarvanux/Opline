@@ -42,4 +42,10 @@ public interface PagoFacadeLocal {
     public boolean comprobarCodigoRepetido(Integer codigoRecibo);
 
     public List<Pago> consultarPagosAsociado(Integer id);
+
+    public Pago consultarPorId(Integer idPago);
+
+    public List<Pago> tipoExclusivo(Integer listarPor, Integer idAsociado);
+
+    public List<Pago> listarOrdenadamente(Integer idAsociado);
 }

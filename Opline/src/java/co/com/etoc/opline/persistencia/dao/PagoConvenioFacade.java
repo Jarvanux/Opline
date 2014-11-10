@@ -95,4 +95,31 @@ public class PagoConvenioFacade extends AbstractFacade<PagoConvenio> implements 
         }
     }
 
+    @Override
+    public List<PagoConvenio> tipoExclusivo(Integer listarPor,Integer idVehiculo) {
+        Query q = null;
+        try {
+            q = em.createNativeQuery("select * from pago_convenio where id_convenio = ? and id_vehiculo = ? order by numero_consig desc", PagoConvenio.class);
+            q.setParameter(1, listarPor);
+            q.setParameter(2, idVehiculo);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<PagoConvenio> listarOrdenadamente(Integer idVehiculo) {
+        Query q = null;
+        try {
+            q = em.createNativeQuery("select * from pago_convenio where id_vehiculo = 2 order by numero_consig desc", PagoConvenio.class);
+            q.setParameter(1, idVehiculo);
+            return q.getResultList();
+        } catch (Exception e) {
+            System.out.println("Se ha producido un error en el Facade al tratar de listar Ordenadmente.");
+            return null;
+        }
+
+    }
+
 }

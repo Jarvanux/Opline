@@ -35,8 +35,21 @@ public class PagoFacade extends AbstractFacade<Pago> implements PagoFacadeLocal 
     public List<Pago> tipoExclusivo(Integer listarPor) {
         Query q = null;
         try {
-            q = em.createNativeQuery("select * from pago where id_tipo_pago = ?", Pago.class);
+            q = em.createNativeQuery("select * from pago where id_tipo_pago = ? order by numero_recibo desc", Pago.class);
             q.setParameter(1, listarPor);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<Pago> tipoExclusivo(Integer listarPor,Integer idAsociado) {
+        Query q = null;
+        try {
+            q = em.createNativeQuery("select * from pago where id_tipo_pago = ? and id_asociado = ? order by numero_recibo desc", Pago.class);
+            q.setParameter(1, listarPor);
+            q.setParameter(2, idAsociado);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -55,7 +68,19 @@ public class PagoFacade extends AbstractFacade<Pago> implements PagoFacadeLocal 
         }
 
     }
-    
+    @Override
+    public List<Pago> listarOrdenadamente(Integer idAsociado) {
+        Query q = null;
+        try {
+            q = em.createNativeQuery("select * from pago where id_asociado = ? order by numero_recibo desc", Pago.class);
+            q.setParameter(1, idAsociado);
+            return q.getResultList();
+        } catch (Exception e) {
+            System.out.println("Se ha producido un error en el Facade al tratar de listar Ordenadmente.");
+            return null;
+        }
+
+    }
     @Override
     public Pago ultimoPago(Integer idAsociado) {
         Query q = null;
@@ -107,5 +132,17 @@ public class PagoFacade extends AbstractFacade<Pago> implements PagoFacadeLocal 
         } catch (Exception e) {
             return null;
         }
+    }
+    
+    @Override
+    public Pago consultarPorId(Integer idPago){
+        Query q = null;
+        try {
+            q = em.createNativeQuery("select * from pago where numero_recibo = ? limit 1", Pago.class);
+            q.setParameter(1, idPago);
+            return (Pago)q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }        
     }
 }

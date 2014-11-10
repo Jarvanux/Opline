@@ -32,27 +32,12 @@ public interface CertificadoFacadeLocal {
 
     List<Certificado> findRange(int[] range);
 
-    int count();
+    int count();                                              
     
-    List<Certificado> consultarPorEstadoPendiente();
-   
-    List<Asociado> consultarAs(List<Certificado> lista); 
-    
-   void actualizar(long id, String respuesta);
-    
-    
-    List<Certificado> consultarPorEmpleado(Integer idEmpleado);
-    
-    Asociado consultarNom(Certificado certi);
-    
-    void insertarPago(long id, long num, Date fechaPago, double valor ,String ob);
-    
-    public void peticion(String tablaReferencia, String documentoSolicitante,Date fecha,String respuesta);
-    
-  
-    
-    List<Certificado> listarAprobados();
-    
-    List<Certificado> listarRechazados();
+    public void peticion(Integer idEmpleado,String tablaReferencia, String documentoSolicitante,Date fecha,String respuesta);    
+
+    public List<Certificado> listarPor(String respuesta);
+
+    public List<Certificado> consultarPorEmpleado(Integer idEmpleado);
     
 }

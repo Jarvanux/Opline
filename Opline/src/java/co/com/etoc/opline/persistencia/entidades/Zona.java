@@ -54,13 +54,11 @@ public class Zona implements Serializable {
     @Column(name = "capacidad_vehiculos")
     private int capacidadVehiculos;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
+    @NotNull   
     @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25)
+    @NotNull   
     @Column(name = "ubicacion")
     private String ubicacion;
     @Size(max = 100)

@@ -63,6 +63,8 @@ public class Certificado implements Serializable {
     @Size(max = 10)
     @Column(name = "respuesta")
     private String respuesta;
+    @Column(name = "id_pago")
+    private Integer idPago;
     @Column(name = "fecha_generado")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaGenerado;
@@ -104,6 +106,14 @@ public class Certificado implements Serializable {
     public Date getFechaSolicitud() {
         return fechaSolicitud;
     }
+
+    public Integer getIdPago() {
+        return idPago;
+    }
+
+    public void setIdPago(Integer idPago) {
+        this.idPago = idPago;
+    }    
 
     public void setFechaSolicitud(Date fechaSolicitud) {
         this.fechaSolicitud = fechaSolicitud;
